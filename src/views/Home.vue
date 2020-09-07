@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-
+    <a-button type="primary">哈哈</a-button>
   </div>
 </template>
 
