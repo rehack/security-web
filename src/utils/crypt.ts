@@ -39,18 +39,18 @@ export function AES_CBC_Decrypt(content: any): string {
     return AESDecrypt(content, '', '', CryptoJS.mode.CBC)
 }
 
-export function RSA_Encrypt(content: string): string {
+export function RSA_Encrypt(content: any): string {
     const jsEncrypt = new JSEncrypt();
     jsEncrypt.setPublicKey(PUBLIC_KEY);
     jsEncrypt.setPrivateKey(PRIVATE_KEY);
-    return jsEncrypt.encryptLong(content);
+    return jsEncrypt.encryptLong(JSON.stringify(content));
 }
 
 export function RSA_Decrypt(content: string): string {
     const jsEncrypt = new JSEncrypt();
     jsEncrypt.setPublicKey(PUBLIC_KEY);
     jsEncrypt.setPrivateKey(PRIVATE_KEY);
-    return jsEncrypt.decryptLong(content);
+    return JSON.parse(jsEncrypt.decryptLong(content));
 }
 
 export function AESEncrypt(word: any, keyStr: string, ivStr: string, mode: Mode): string {

@@ -3,6 +3,7 @@ import store from '@/store';
 import { doLogin, getUserInfo, logout, refresh } from '@/api/user';
 import { removeToken, setAccessToken, setRefreshToken, hasAccessToken, hasRefreshToken } from '@/utils/cookies';
 import { resetRouter } from "@/router";
+import {RSA_Decrypt} from '@/utils/crypt';
 
 export interface IUserState {
     user_id: number
@@ -77,7 +78,8 @@ class User extends VuexModule implements IUserState {
             appSecret: this.appSecret,
             ...userInfo
         }
-        const res: any = await doLogin(params);
+        let res: any = await doLogin(params);
+        res = RSA_Decrypt(res);
         if (res.code === 200) {
             const data = res.data;
             const access_token = data.access_token;

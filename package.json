@@ -9,6 +9,7 @@
     "svgo": "svgo -f src/icon/svg --config=src/icon/svgo.yml"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^5.1.5",
     "@types/crypto-js": "^3.1.47",
     "@types/js-cookie": "^2.2.6",
     "@types/nprogress": "^0.2.0",

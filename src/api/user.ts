@@ -5,7 +5,7 @@ export const doLogin = (params: any) =>
     requests({
         url: '/system/auth/login',
         method: 'post',
-        params
+        data: {'reqData': RSA_Encrypt(params)}
     });
 
 export const getUserInfo = () =>
