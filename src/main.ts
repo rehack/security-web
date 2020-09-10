@@ -5,6 +5,8 @@ import store from './store';
 import Antd from 'ant-design-vue';
 import axios from "axios";
 import SvgIcon from "@/icon/SvgIcon.vue";
+import '@/icon'
+import '@/permission'
 
 const app = createApp(App);
 

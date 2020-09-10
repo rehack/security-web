@@ -12,6 +12,18 @@ module.exports = {
     lintOnSave: false,
     runtimeCompiler: false,
 
+    configureWebpack: (config) => {
+        config.resolve = {
+            extensions: ['.ts', '.json', '.vue', '.js'],
+            alias: {
+                '@': resolve(__dirname, './src'),
+            }
+        }
+        if (process.env.NODE_ENV === 'development') {
+            config.devtool = 'source-map'
+        }
+    },
+
     chainWebpack: (config) => {
         const svgRule = config.module.rule("svg");
         svgRule.uses.clear();
@@ -24,15 +36,6 @@ module.exports = {
                     include: ['./src/icon']
                 }
             );
-    },
-
-    configureWebpack: (config) => {
-        config.resolve = {
-            extensions: ['.ts', '.json', '.vue', '.js'],
-            alias: {
-                '@': resolve(__dirname, './src'),
-            }
-        }
     },
 
     css:{
@@ -52,12 +55,14 @@ module.exports = {
     },
 
     // 它支持webPack-dev-server的所有选项
+
     devServer: {
         host: "localhost",
         port: devServerPort, // 端口号
         https: false, // https:{type:Boolean}
         open: true, //配置自动启动浏览器
         // 配置多个代理
+        /*
         proxy: {
             "/": {
                 target: process.env.VUE_APP_BASE_API,//目标主机
@@ -65,6 +70,7 @@ module.exports = {
                 changeOrigin: true,//需要虚拟主机站点,
             }
         }
-    }
+        */
+    },
 
 }

@@ -7,15 +7,16 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from "vue-property-decorator";
+    import {Prop} from "vue-property-decorator";
+    import { Options, Vue } from "vue-class-component"
 
-    @Component({
+    @Options({
         name: 'SvgIcon'
     })
 
     export default class extends Vue{
 
-        @Prop({default: 'dashboard'}) private iconName!: string;
+        @Prop({ default: 'dashboard'}) public iconName!: string;
         @Prop({ default: 'dashboard'}) public iconClass!: string;
 
         get iconNames() {
@@ -38,25 +39,25 @@
         height: 1em;
         fill: currentColor;
     }
-    .colorRed {
+    .color-red {
         color: red;
-     }
-    .colorWhite {
+    }
+    .color-white {
         color: white;
     }
-    .colorBlue {
+    .color-blue {
         color: lightskyblue;
     }
-    .colorBlack {
+    .color-black {
         color: black;
     }
-    .font20{
+    .font20 {
         font-size: 20px;
     }
-    .font25{
+    .font25 {
         font-size: 25px;
     }
-    .font30{
+    .font30 {
         font-size: 30px;
     }
 </style>
