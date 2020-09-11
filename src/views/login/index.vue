@@ -13,7 +13,7 @@
                     <template v-slot:suffix><a-tooltip title="密码"><info-circle-outlined style="color: rgba(0,0,0,.45)" /></a-tooltip></template>
                 </a-input>
             </a-form-item>
-            <a-form-item :wrapper-col="{ span: 24 }">
+            <a-form-item :wrapper-col="wrapperCol">
                 <a-row type="flex" justify="space-between">
                     <a-button type="dashed" class="form-button">注册</a-button>
                     <a-button @click="doLogin" type="primary" class="form-button">提交</a-button>
@@ -27,6 +27,7 @@
 import { Options, Vue } from "vue-class-component";
 import { UserOutlined, SafetyOutlined,InfoCircleOutlined } from "@ant-design/icons-vue";
 import { UserModule } from '@/store/module/user';
+import { message, notification } from "ant-design-vue";
 
 @Options({
     name: "login",
@@ -37,7 +38,7 @@ import { UserModule } from '@/store/module/user';
     }
 })
 
-export default class  extends Vue{
+export default class extends Vue{
 
     public labelCol = { span: 24 }
     public wrapperCol =  { span: 24 }

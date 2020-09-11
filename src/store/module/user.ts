@@ -4,6 +4,7 @@ import { doLogin, getUserInfo, logout, refresh } from '@/api/user';
 import { removeToken, setAccessToken, setRefreshToken, hasAccessToken, hasRefreshToken } from '@/utils/cookies';
 import { resetRouter } from "@/router";
 import {RSA_Decrypt} from '@/utils/crypt';
+import { message } from 'ant-design-vue';
 
 export interface IUserState {
     user_id: number
@@ -84,10 +85,12 @@ class User extends VuexModule implements IUserState {
             const data = res.data;
             const access_token = data.access_token;
             const refresh_token = data.refresh_token;
-            setAccessToken(data.access_token, parseInt(data.expires_in));
-            setRefreshToken(data.refresh_token, 43200);
+            setAccessToken(access_token, parseInt(data.expires_in));
+            setRefreshToken(refresh_token, 43200);
             this.SET_ACCESS_TOKEN(access_token);
             this.SET_REFRESH_TOKEN(refresh_token);
+        } else {
+            message.error(res.msg);
         }
     }
 
