@@ -1,7 +1,7 @@
 import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import { doLogin, getUserInfo, logout, refresh } from '@/api/user';
-import { removeToken, setAccessToken, setRefreshToken, hasAccessToken, hasRefreshToken } from '@/utils/cookies';
+import { removeToken, setAccessToken, setRefreshToken, hasAccessToken, hasRefreshToken, getAccessToken } from '@/utils/cookies';
 import { resetRouter } from "@/router";
 import {RSA_Decrypt} from '@/utils/crypt';
 import { message } from 'ant-design-vue';
@@ -25,7 +25,7 @@ class User extends VuexModule implements IUserState {
     public username = '';
     public nickname = '';
     public roles: string[] = [];
-    public access_token = '';
+    public access_token: any = getAccessToken();
     public refresh_token = '';
     public permissions: string[] = [];
     public phone = '';
@@ -73,7 +73,7 @@ class User extends VuexModule implements IUserState {
     }
 
     @Action
-    public async Login(userInfo: {username: string, password: string}) {
+    public async Login(userInfo: {username: string, password: string}): Promise<boolean> {
         const params = {
             appId: this.appId,
             appSecret: this.appSecret,
@@ -89,9 +89,11 @@ class User extends VuexModule implements IUserState {
             setRefreshToken(refresh_token, 43200);
             this.SET_ACCESS_TOKEN(access_token);
             this.SET_REFRESH_TOKEN(refresh_token);
+            return true;
         } else {
-            message.error(res.msg);
+            this.ResetToken()
         }
+        return false;
     }
 
     @Action

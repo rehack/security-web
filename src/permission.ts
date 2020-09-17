@@ -7,7 +7,7 @@ import { message } from 'ant-design-vue';
 import settings from "@/settings";
 
 NProgress.configure({ showSpinner: false });
-const whiteList = ['/login', '/auth-redirect'];
+const whiteList = ['/login', '/auth-redirect', '/test'];
 
 const getPageTitle = (key: string) => {
   if (key) {
@@ -27,9 +27,12 @@ router.beforeEach(async(to: RouteLocationNormalized,  from: RouteLocationNormali
             if (UserModule.roles.length === 0) {
                 try {
                     await UserModule.GetUserInfo();
-                    const roles = UserModule.roles;
-                    const permissions = UserModule.permissions;
-                    PermissionModule.GenerateRoutes(roles, permissions);
+                    const roles: string[] = UserModule.roles;
+                    const permissions: string[] = UserModule.permissions;
+                    PermissionModule.GenerateRoutes({roles, permissions});
+                    PermissionModule.dynamicRoutes.forEach(route => {
+                        router.addRoute(route);
+                    })
                     next({ ...to, replace: true})
                 } catch (error) {
                     UserModule.ResetToken();

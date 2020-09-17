@@ -11,11 +11,20 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     path: "/",
     meta: {},
     component: () => import("@/views/dashboard/index.vue")
+  },
+  {
+    path: '/test',
+    meta: { hidden: true },
+    component: () => import('@/views/test/index.vue')
   }
 ]
 
 export const asyncRoutes: Array<RouteRecordRaw> = [
-
+  {
+    path: '/dashboard',
+    meta: {hidden: true},
+    component: () => import('@/views/dashboard/index.vue')
+  }
 ]
 
 const createRoutes = () => createRouter({
