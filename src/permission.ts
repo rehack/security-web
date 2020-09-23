@@ -4,7 +4,7 @@ import NProgress from 'nprogress';
 import { UserModule } from '@/store/module/user';
 import { PermissionModule } from '@/store/module/permissions';
 import { message } from 'ant-design-vue';
-import settings from "@/settings";
+import { SettingsModule} from "@/store/module/settings";
 
 NProgress.configure({ showSpinner: false });
 const whiteList = ['/login', '/auth-redirect', '/test'];
@@ -13,7 +13,7 @@ const getPageTitle = (key: string) => {
   if (key) {
       return key;
   }
-  return `${settings.title}`;
+  return `${SettingsModule.title}`;
 };
 
 router.beforeEach(async(to: RouteLocationNormalized,  from: RouteLocationNormalized, next: NavigationGuardNext) => {
@@ -48,6 +48,7 @@ router.beforeEach(async(to: RouteLocationNormalized,  from: RouteLocationNormali
         if (whiteList.indexOf(to.path) !== -1) {
             next()
         } else {
+            UserModule.LogOut();
             next(`/login?redirect=${to.path}`);
             NProgress.done()
         }

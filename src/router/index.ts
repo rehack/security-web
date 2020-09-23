@@ -4,26 +4,37 @@ import Home from '../views/Home.vue'
 export const constantRoutes: Array<RouteRecordRaw> = [
   {
     path: '/login',
-    meta: {hidden: true},
+    name: '登录',
+    meta: { hidden: false, title: "登录"},
     component: () => import('@/views/login/index.vue')
   },
   {
     path: "/",
-    meta: {},
+    meta: { hidden: false, title: "Dashboard" },
     component: () => import("@/views/dashboard/index.vue")
   },
   {
     path: '/test',
-    meta: { hidden: true },
-    component: () => import('@/views/test/index.vue')
+    name: '测试',
+    meta: { hidden: false, title: "测试" },
+    component: () => import('@/views/dashboard/index.vue')
   }
 ]
 
 export const asyncRoutes: Array<RouteRecordRaw> = [
   {
     path: '/dashboard',
-    meta: {hidden: true},
-    component: () => import('@/views/dashboard/index.vue')
+    name: '首页',
+    meta: { hidden: false, title: "Dashboard" },
+    component: () => import('@/views/dashboard/index.vue'),
+    children: [
+      {
+        path: '/order',
+        name: '订单',
+        meta: { hidden: false, title: "订单信息"},
+        component: () => import('@/views/dashboard/index.vue')
+      }
+    ]
   }
 ]
 

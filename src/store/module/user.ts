@@ -25,7 +25,7 @@ class User extends VuexModule implements IUserState {
     public username = '';
     public nickname = '';
     public roles: string[] = [];
-    public access_token: any = getAccessToken();
+    public access_token: any = getAccessToken() || '';
     public refresh_token = '';
     public permissions: string[] = [];
     public phone = '';
@@ -132,15 +132,12 @@ class User extends VuexModule implements IUserState {
 
     @Action
     public async LogOut() {
-        if (this.access_token === '') {
-            throw Error('LogOut: access_token is undefined!');
+        if (this.access_token != '') {
+            const res: any = await logout();
         }
-        const res: any = await logout();
-        if (res.code === 200) {
-            resetRouter();
-            this.ResetToken();
-            this.ResetUserInfo();
-        }
+        resetRouter();
+        this.ResetToken();
+        this.ResetUserInfo();
     }
 
     @Action
