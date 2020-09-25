@@ -60,4 +60,7 @@
     .font30 {
         font-size: 30px;
     }
+    .position-bottom {
+        padding-top: 3px;
+    }
 </style>

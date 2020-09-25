@@ -1,12 +1,9 @@
 <template>
     <div id="tags-view-container" class="tags-view-container">
-        <router-link v-for="tag in visitedViews" ref="tag" :key="tag.path" :class="isActive(tag) ? 'active': ''"
-                     :to="{path: tag.path, query: tag.query, fullPath: tag.fullPath}" tag="span" class="tags-view-item"
-                     @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''">
-            <a-tag :color="getTheme()" :closable="!isAffix(tag)" @close="closeSelectedTag(tag)">
+            <a-tag :color="getTheme(tag)" :closable="!isAffix(tag)" v-for="tag in visitedViews" :key="tag.path"
+                   @close="closeSelectedTag(tag)" @click="routeToPath(tag)" class="tag-item">
                 {{tag.meta.title}}
             </a-tag>
-        </router-link>
     </div>
 </template>
 
@@ -14,18 +11,34 @@
 import { Options, Vue } from "vue-class-component"
 import {ITagView, TagViewModule} from "@/store/module/tag-views";
 import {Watch} from "vue-property-decorator";
+import {RouteRecordRaw} from "vue-router";
+import path from "path";
+import {PermissionModule} from "@/store/module/permissions";
 
 @Options({
     name: "tag-view"
 })
 export default class TagView extends Vue {
 
-    private tagThemes = ['pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue', 'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime']
+    private tagThemes = ['pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue', 'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime'];
+    private activeTheme = '#2db7f5';
+    private affixTags: ITagView[] = [];
 
-    private getTheme(): string {
+    get visitedViews() {
+        return TagViewModule.visitedViews;
+    }
+
+    get routes() {
+        return PermissionModule.routes;
+    }
+
+    mounted() {
+        this.initTagsView();
+    }
+
+    private getTheme(tag: ITagView): string {
         const number = Math.floor((Math.random() * 100)) % 13;
-        console.log(number)
-        return this.tagThemes[number];
+        return this.isActive(tag) ? this.activeTheme : this.tagThemes[number];
     }
 
     private isActive(route: ITagView) {
@@ -41,6 +54,10 @@ export default class TagView extends Vue {
         if (this.isActive(view)) {
             this.toLastView(TagViewModule.visitedViews, view)
         }
+    }
+
+    private routeToPath(tag: ITagView) {
+        this.$router.push(tag.path);
     }
 
     private toLastView(visitedViews: ITagView[], view: ITagView) {
@@ -66,18 +83,43 @@ export default class TagView extends Vue {
         })
     }
 
+    private initTagsView() {
+        this.affixTags = this.filterAffixTags(this.routes)
+        for (const tag of this.affixTags) {
+            if (tag.name) {
+                TagViewModule.addVisitedView(tag);
+            }
+        }
+    }
+
+    private filterAffixTags(routes: RouteRecordRaw[], basePath = '/') {
+        let tags: ITagView[] = [];
+        routes.forEach(route => {
+            if (route.meta && route.meta.affix) {
+                const tagPath = path.resolve(basePath, route.path)
+                tags.push({
+                    fullPath: tagPath,
+                    path: tagPath,
+                    name: route.name,
+                    meta: {...route.meta}
+                })
+            }
+            if (route.children) {
+                const childTags = this.filterAffixTags(route.children, route.path)
+                if (childTags.length >= 1) {
+                    tags = [...tags, ...childTags]
+                }
+            }
+        })
+        return tags;
+    }
+
     private addTags() {
         const { name } = this.$route;
         if (name) {
             TagViewModule.addView(this.$route);
         }
-        console.log(TagViewModule.visitedViews)
         return false;
-    }
-
-    get visitedViews() {
-        console.log(TagViewModule.visitedViews)
-        return TagViewModule.visitedViews;
     }
 
     @Watch('$route')
@@ -97,6 +139,10 @@ export default class TagView extends Vue {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+
+    .tag-item {
+        cursor: pointer;
+    }
 
     .tags-view-wrapper {
         .tags-view-item {
@@ -119,23 +165,6 @@ export default class TagView extends Vue {
 
             &:last-of-type {
                 margin-right: 15px;
-            }
-
-            &.active {
-                background-color: #42b983;
-                color: #fff;
-                border-color: #42b983;
-
-                &::before {
-                    content: '';
-                    background: #fff;
-                    display: inline-block;
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 50%;
-                    position: relative;
-                    margin-right: 2px;
-                }
             }
         }
     }

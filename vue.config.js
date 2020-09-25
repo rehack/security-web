@@ -44,7 +44,7 @@ module.exports = {
         sourceMap: false,
         loaderOptions:{
             sass: {
-                prependData: '@import "@/styles/main.scss";'
+                prependData: '@import "@/styles/main.scss";',
             },
             less: {
                 lessOptions: {

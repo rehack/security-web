@@ -1,27 +1,37 @@
 <template>
     <template v-if="!hasChild()">
-        <a-menu-item @click="toPath(item.path)">{{item.meta.title}}</a-menu-item>
-    </template>
-    <template v-else>
-        <a-sub-menu>
-            <template v-slot:title>
+        <a-menu-item>
+            <sidebar-item-link :to="item.path">
                 <span>{{item.meta.title}}</span>
-            </template>
-            <sidebar-item v-for="child in item.children" :key="child.path" :item="child"></sidebar-item>
-        </a-sub-menu>
+            </sidebar-item-link>
+        </a-menu-item>
     </template>
+    <a-sub-menu v-else>
+        <template v-slot:title>
+            <span><appstore-two-tone /><span>{{item.meta.title}}</span></span>
+        </template>
+        <template v-if="item.children">
+            <sidebar-item v-for="child in item.children" :key="child.path" :item="child"></sidebar-item>
+        </template>
+    </a-sub-menu>
 </template>
 
 <script lang="ts">
 import { Options, Vue} from "vue-class-component";
-import { Prop, Watch } from "vue-property-decorator";
+import { Prop } from "vue-property-decorator";
 import {RouteRecordRaw} from "vue-router";
 import SideBarItemLink from "@/components/sidebar/SideBarItemLink.vue";
+import { UserOutlined, SafetyOutlined,InfoCircleOutlined, AppstoreTwoTone } from "@ant-design/icons-vue";
+import {ITagView} from "@/store/module/tag-views";
+import path from "path";
+import { isExternal } from '@/utils/validate'
 
 @Options({
     name: "sidebar-item",
     components: {
-        "sidebar-item-link": SideBarItemLink
+        "sidebar-item-link": SideBarItemLink,
+        UserOutlined,
+        AppstoreTwoTone
     }
 })
 
@@ -39,8 +49,10 @@ export default class SideBarItem extends Vue{
         return false;
     }
 
-    private toPath(path: string) {
-        this.$router.push(path)
+    private getMenuIcon(icon: string) {
+        const iconHtml = '<' + icon + '/>';
+        console.log(iconHtml)
+        return iconHtml;
     }
 
 }
