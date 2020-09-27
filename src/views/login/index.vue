@@ -15,7 +15,7 @@
                     </a-input>
                 </a-form-item>
                 <a-form-item :wrapper-col="wrapperCol">
-                    <a-button @click="doLogin" type="primary" class="form-button">登录</a-button>
+                    <a-button @click="doLogin" type="primary" class="form-button" :loading="isLoginReqLoading">登录</a-button>
                 </a-form-item>
             </a-form>
         </div>
@@ -49,6 +49,7 @@ export default class Login extends Vue {
             { validator: this.checkPassword ,message: '请输入密码', trigger: 'blur' }
         ]
     }
+    private isLoginReqLoading = false;
 
     public loginForm = {
         username: '',
@@ -56,6 +57,7 @@ export default class Login extends Vue {
     }
 
     private doLogin() {
+        this.isLoginReqLoading = true;
         (this.$refs.loginRef as any).validate().then(() => {
             UserModule.Login(this.loginForm).then((loginState) => {
                 if (loginState) {
@@ -63,9 +65,11 @@ export default class Login extends Vue {
                 } else {
                     message.error("用户名或密码错误");
                 }
+                this.isLoginReqLoading = false;
             })
         }).catch(() => {
             Promise.reject('登录失败');
+            this.isLoginReqLoading = false;
         })
     }
 

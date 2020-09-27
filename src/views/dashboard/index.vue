@@ -1,6 +1,6 @@
 <template>
     <div class="app-wrapper" :class="sideBarClass">
-        <sidebar class="sidebar-container"></sidebar>
+        <sidebar class="sidebar-container" :class="themeBack"></sidebar>
         <div class="main-container">
             <div v-if="navBar">
                 <nav-bar></nav-bar>
@@ -40,6 +40,11 @@ export default class extends Vue {
     get sideBarClass() {
         return SettingsModule.menuCollapsed ? "hideSidebar" : "";
     }
+
+    get themeBack() {
+        console.log('来了')
+        return SettingsModule.light ? '' : 'un-light';
+    }
 }
 </script>
 
@@ -62,6 +67,7 @@ export default class extends Vue {
     left: 0;
     z-index: 1001;
     overflow: hidden;
+    background: $Light;
 }
 
 .main-container {
@@ -80,6 +86,10 @@ export default class extends Vue {
     .sidebar-container {
         width: $sideBarWidthHide !important;
     }
+}
+
+.un-light {
+    background: $unLight;
 }
 
 </style>

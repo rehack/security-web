@@ -1,6 +1,6 @@
 import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import { doLogin, getUserInfo, logout, refresh } from '@/api/user';
+import { doLogin, getUserInfo, doLogout, refresh } from '@/api/user';
 import { removeToken, setAccessToken, setRefreshToken, hasAccessToken, hasRefreshToken, getAccessToken } from '@/utils/cookies';
 import { resetRouter } from "@/router";
 import {RSA_Decrypt} from '@/utils/crypt';
@@ -131,13 +131,17 @@ class User extends VuexModule implements IUserState {
     }
 
     @Action
-    public async LogOut() {
+    public async LogOut(): Promise<boolean> {
         if (this.access_token != '') {
-            const res: any = await logout();
+            const res: any = await doLogout();
+            if (res.code === 200) {
+                resetRouter();
+                this.ResetToken();
+                this.ResetUserInfo();
+                return true;
+            }
         }
-        resetRouter();
-        this.ResetToken();
-        this.ResetUserInfo();
+        return false;
     }
 
     @Action

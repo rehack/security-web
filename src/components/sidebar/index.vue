@@ -1,9 +1,12 @@
 <template>
-    <div v-bind:style="{'width': menuWidth, 'height': '100%'}">
+    <div>
         <a-menu mode="inline" :inline-collapsed="collapsed" :theme="theme">
-            <a-menu-item key="dashboard">
-                <a-row class="top-content">
-                    <span>ShopMall</span>
+            <a-menu-item key="dashboard" @click="toDashboard">
+                <a-row :class="light ? 'top-content' : 'top-content-black'">
+                    <span v-if="!collapsed">
+                        ShopMall
+                    </span>
+                    <svg-icon v-else iconName="shopmall" />
                 </a-row>
             </a-menu-item>
             <sidebar-item v-for="route in routes" :key="route.path" :item="route"></sidebar-item>
@@ -38,6 +41,14 @@ export default class extends Vue {
     get theme() {
         return SettingsModule.light ? 'light' : 'dark';
     }
+
+    get light() {
+        return SettingsModule.light;
+    }
+
+    private toDashboard() {
+        this.$router.push("/")
+    }
 }
 </script>
 
@@ -45,5 +56,8 @@ export default class extends Vue {
 .top-content {
     font-size: 20px;
     background-color: aliceblue;
+}
+.top-content-black {
+    font-size: 20px;
 }
 </style>

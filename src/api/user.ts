@@ -14,12 +14,11 @@ export const getUserInfo = () =>
         method: 'get'
     });
 
-export const logout = () => {
+export const doLogout = () =>
     requests({
         url: '/order/auth/logout',
         method: 'post',
     })
-};
 
 export const refresh = (params: any) => {
     requests({

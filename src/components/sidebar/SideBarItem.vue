@@ -1,19 +1,21 @@
 <template>
-    <template v-if="!hasChild()">
-        <a-menu-item>
-            <sidebar-item-link :to="item.path">
-                <span>{{item.meta.title}}</span>
-            </sidebar-item-link>
-        </a-menu-item>
+    <template v-if="item.meta && !item.meta?.hidden">
+        <template v-if="!hasChild()">
+            <a-menu-item>
+                <sidebar-item-link :to="item.path">
+                    <span>{{item.meta.title}}</span>
+                </sidebar-item-link>
+            </a-menu-item>
+        </template>
+        <a-sub-menu v-else>
+            <template v-slot:title>
+                <span><appstore-two-tone /><span>{{item.meta.title}}</span></span>
+            </template>
+            <template v-if="item.children">
+                <sidebar-item v-for="child in item.children" :key="child.path" :item="child"></sidebar-item>
+            </template>
+        </a-sub-menu>
     </template>
-    <a-sub-menu v-else>
-        <template v-slot:title>
-            <span><appstore-two-tone /><span>{{item.meta.title}}</span></span>
-        </template>
-        <template v-if="item.children">
-            <sidebar-item v-for="child in item.children" :key="child.path" :item="child"></sidebar-item>
-        </template>
-    </a-sub-menu>
 </template>
 
 <script lang="ts">
@@ -40,6 +42,9 @@ export default class SideBarItem extends Vue{
     @Prop({value : "item"}) public item!: RouteRecordRaw;
 
     private hasChild(): boolean {
+        if (this.item.meta?.root) {
+            return false;
+        }
         if (this.item.meta?.hidden) {
             return false;
         }

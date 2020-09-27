@@ -1,23 +1,38 @@
 <template>
     <div class="navbar-container" id="navbar-container">
-        <menu-fold-outlined class="navbar-icon" v-if="!menuCollapsed" @click="foldOrUnFold"></menu-fold-outlined>
-        <menu-unfold-outlined class="navbar-icon" v-else @click="foldOrUnFold"></menu-unfold-outlined>
-        <bulb-outlined class="navbar-icon" v-if="light" @click="lightOrUnLight"></bulb-outlined>
-        <bulb-outlined class="navbar-icon" v-else @click="lightOrUnLight"></bulb-outlined>
+        <menu-fold-outlined class="navbar-icon" v-if="!menuCollapsed" @click="foldOrUnFold" />
+        <menu-unfold-outlined class="navbar-icon" v-else @click="foldOrUnFold" />
+        <rocket-two-tone v-if="light" @click="lightOrUnLight" class="navbar-icon"/>
+        <rocket-outlined  v-else @click="lightOrUnLight" class="navbar-icon"/>
+        <bread-crumb class="navbar-bread"></bread-crumb>
+        <div class="navbar-right-items">
+            <message class="navbar-right-item"/>
+            <user class="navbar-right-item"/>
+            <out class="navbar-right-item"/>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { MenuFoldOutlined, MenuUnfoldOutlined, BulbOutlined }from "@ant-design/icons-vue";
+import { MenuFoldOutlined, MenuUnfoldOutlined, RocketOutlined, RocketTwoTone }from "@ant-design/icons-vue";
 import { SettingsModule} from "@/store/module/settings";
+import Breadcrumb from "@/components/breadcrumb/index.vue";
+import User from "@/components/navbar/user.vue";
+import Message from "@/components/navbar/message.vue";
+import Out from "@/components/navbar/out.vue";
 
 @Options({
     name: 'nav-bar',
     components: {
         MenuFoldOutlined,
         MenuUnfoldOutlined,
-        BulbOutlined
+        RocketOutlined,
+        RocketTwoTone,
+        "bread-crumb" : Breadcrumb,
+        User,
+        Message,
+        Out
     }
 })
 export default class navBar extends Vue{
@@ -55,6 +70,25 @@ export default class navBar extends Vue{
     .navbar-icon {
         font-size: 25px;
         cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .navbar-bread {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .navbar-right-items {
+        width: 15%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        float: right;
+
+        .navbar-right-item {
+            cursor: pointer;
+            font-size: 20px;
+        }
     }
 
 }
