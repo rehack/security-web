@@ -24,27 +24,26 @@
             <a-button type="primary" @click="initUserData" :loading="searchLoading">搜索</a-button>
         </a-form-item>
     </a-form>
-    <a-table :columns="columns" :data-source="users" rowKey="userId" @change="handleChange"
-             :pagination="pagination" :loading="searchLoading" bordered>
-        <template v-slot:avatar="{text, record, index}">
-            <a-avatar :src="text" />
-        </template>
-        <template v-slot:state="{text, record, index}">
-            <span>{{text === 1 ? '启用' : '禁用'}}</span>
-        </template>
-        <template v-slot:operation="{userId, record, index}">
-            <a-button type="primary" @click="edit(record)">编辑</a-button>
-        </template>
+
+    <a-table :columns="columns" :data-source="users" rowKey="userId" @change="handleChange" :pagination="pagination" :loading="searchLoading" bordered>
+        <template v-slot:avatar="{text, record, index}"><a-avatar :src="text" /></template>
+        <template v-slot:state="{text, record, index}"><span>{{text === 1 ? '启用' : '禁用'}}</span></template>
+        <template v-slot:operation="{userId, record, index}"><a-button type="primary" @click="edit(record)">编辑</a-button></template>
     </a-table>
 
-    <a-modal title="编辑用户" v-model:visible="editorVisible">
+    <a-modal title="编辑用户" v-model:visible="editorVisible" :confirm-loading="editorLoading" @ok="saveUser">
         <a-form :model="editUser" layout="horizontal">
-            <a-form-item label="用户名">
-                <a-input v-model:value="editUser.userId" disabled>
+            <a-form-item label="用户名" :label-col="labelCol" :wrapper-col="wrapperCol">
+                <a-input v-model:value="editUser.username" disabled>
                     <template v-slot:prefix><user-outlined type="user"/></template>
                 </a-input>
             </a-form-item>
-
+            <a-form-item label="昵称" :label-col="labelCol" :wrapper-col="wrapperCol">
+                <a-input v-model:value="editUser.nickname" />
+            </a-form-item>
+            <a-form-item label="电话" :label-col="labelCol" :wrapper-col="wrapperCol">
+                <a-input v-model:value="editUser.phone" />
+            </a-form-item>
         </a-form>
     </a-modal>
 </template>
@@ -90,15 +89,18 @@
             pageSizeOptions: ['10', '20', '30'],
         }
 
-
-        private users: any[] = [];
+        public labelCol = { span: 3 }
+        public wrapperCol =  { span: 21 }
+        private users = [];
         private total = 0;
         private searchLoading = false;
         private editorVisible = false;
+        private editorLoading = false;
         private editUser = {
             userId: '',
             nickname: '',
-            phone: ''
+            phone: '',
+            username: ''
         };
 
         get roles() {
@@ -118,7 +120,7 @@
                 ...this.pageInfo
             }
             const res: any = await queryUsers(params);
-            if (res.code === 200) {
+            if (res.code === '200') {
                 this.users = res.data.records;
                 this.total = res.data.total;
             }
@@ -132,6 +134,12 @@
         private edit(user: any) {
             this.editUser = user;
             this.editorVisible = true;
+        }
+        private saveUser() {
+            this.editorLoading = true
+            console.log(this.editUser)
+            this.editorVisible = false;
+            this.editorLoading = false;
         }
 
     }

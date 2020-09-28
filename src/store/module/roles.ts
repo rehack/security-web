@@ -25,7 +25,7 @@ class Roles extends VuexModule implements IRoles {
     @Action
     public async initRoles() {
         const res: any = await querySelectionRoles();
-        if (res.code === 200) {
+        if (res.code === '200') {
             this.setRoles(res.data);
         } else {
             message.info('initRoles: request failed')

@@ -47,7 +47,7 @@ service.interceptors.response.use(
                     res = JSON.parse(RSA_Decrypt(response.data));
                     break;
             };
-            if (res.code != 200) {
+            if (res.code != '200') {
                 message.error("出错啦", 5);
                 return Promise.reject(new Error(res.message || 'Error'))
             } else {
