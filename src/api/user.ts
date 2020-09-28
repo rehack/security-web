@@ -20,11 +20,16 @@ export const doLogout = () =>
         method: 'post',
     })
 
-export const refresh = (params: any) => {
+export const refresh = (params: any) =>
     requests({
         url: '/system/auth/refresh',
         method: 'post',
         params
     })
-};
 
+export const queryUsers = (params: any) =>
+    requests({
+        url: '/system/user/query_user',
+        method: 'get',
+        params
+    })

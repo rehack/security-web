@@ -8,6 +8,7 @@
             <div v-if="tagView">
                 <tag-view></tag-view>
             </div>
+            <app-main />
         </div>
     </div>
 </template>
@@ -18,13 +19,15 @@ import { SettingsModule } from "@/store/module/settings";
 import SideBar from "@/components/sidebar/index.vue";
 import TagView from "@/components/tagview/index.vue";
 import NavBar from "@/components/navbar/index.vue";
+import AppMain from "@/components/AppMain.vue";
 
 @Options({
     name: 'dashboard',
     components: {
         "sidebar": SideBar,
         "tag-view": TagView,
-        "nav-bar": NavBar
+        "nav-bar": NavBar,
+        "app-main": AppMain
     }
 })
 export default class extends Vue {
@@ -42,7 +45,6 @@ export default class extends Vue {
     }
 
     get themeBack() {
-        console.log('来了')
         return SettingsModule.light ? '' : 'un-light';
     }
 }
@@ -75,7 +77,6 @@ export default class extends Vue {
     margin-left: $sideBarWidthOpen;
     transition: margin-left 0.28s;
     position: relative;
-    z-index: 1002;
 }
 
 .hideSidebar {

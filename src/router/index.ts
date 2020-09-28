@@ -1,21 +1,21 @@
 import {createRouter, createWebHistory, RouteRecordRaw, ScrollBehavior} from 'vue-router'
-import Home from '../views/Home.vue'
 import systemRoutes from "@/router/modules/system";
 import orderRoutes from "@/router/modules/order";
+import Dashboard from "@/views/dashboard/index.vue";
 
 export const constantRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
     redirect: '/dashboard',
     name: '首页',
-    component: () => import("@/views/dashboard/index.vue"),
+    component: Dashboard,
     meta: { title: '首页', root: true },
     children: [
       {
         name: '系统首页',
         meta: { title: '系统首页', affix: true, hidden: true},
         path: '/dashboard',
-        component: () => import("@/views/dashboard/index.vue"),
+        component: () => import("@/views/Home.vue"),
       }
     ]
   },
