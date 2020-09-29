@@ -122,10 +122,10 @@ export default class User extends Vue{
     private edit(node: any) {
         this.nowNode = node.node.dataRef
         this.modalVisible = true
+        this.modalTitle = this.nowNode.permissionName
     }
     private tabChange(key: any) {
         const tab: any = this.modalOptions.filter(item => item.key === key)[0]
-        this.modalTitle = tab.tab
         this.activeKey = tab.key
         if (tab.key === 2) {
             this.newPermission.parentId = this.nowNode.permissionId

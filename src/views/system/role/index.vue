@@ -4,6 +4,9 @@
             <a-input placeholder="角色" v-model:value="queryRolesParam.role" autocomplete="off" allowClear/>
         </a-form-item>
         <a-form-item>
+            <a-input placeholder="权限" v-model:value="queryRolesParam.permission" autocomplete="off" allowClear/>
+        </a-form-item>
+        <a-form-item>
             <a-select v-model:value="queryRolesParam.state" placeholder="角色状态" style="width: 120px" allowClear>
                 <a-select-option value="1">启用</a-select-option>
                 <a-select-option value="0">禁用</a-select-option>
@@ -74,9 +77,12 @@ import { queryPermissions, queryByRoleId } from "@/api/permission";
 export default class User extends Vue{
 
     private pagination = {
-        pageSize: 20,
+        total: 0,
+        pageSize: 10,
         showSizeChanger: true,
+        showQuickJumper: true,
         pageSizeOptions: ['10', '20', '30'],
+        showTotal: (total: any, range: any) => `显示第${range[0]}-${range[1]}条记录,共${total}条 `
     }
     private columns = [
         { title: '角色', dataIndex: 'role', width: '20%' },
@@ -92,10 +98,10 @@ export default class User extends Vue{
     }
     private queryRolesParam = {
         role: '',
-        state: ''
+        state: '',
+        permission: ''
     }
     private roles = []
-    private total = 0
     private searchLoading = false
     private nowRole = {
         roleId: '',
@@ -137,7 +143,7 @@ export default class User extends Vue{
         const res: any = await queryRoles(params)
         if (res.code === 200) {
             this.roles = res.data.records
-            this.total = res.data.total
+            this.pagination.total = parseInt(res.data.total)
         }
 
         this.searchLoading = false
@@ -207,8 +213,9 @@ export default class User extends Vue{
         const cancelChecked = event.node.checked
         const children: any[] = event.node.children
         const checkedArray = (this.rolePermissions as any).checked
+        const childrenKeys: any[] = children.map(child => child.key)
         if (cancelChecked && children?.length > 0) {
-            (this.rolePermissions as any).checked = (this.rolePermissions as any).checked.filter((item: any) => !checkedArray.includes(item))
+            (this.rolePermissions as any).checked = checkedArray.filter((item: any) => (!childrenKeys.includes(item)))
         }
         if (!cancelChecked && children?.length > 0) {
             children.forEach(child => (this.rolePermissions as any).checked.push(child.key))
@@ -219,7 +226,11 @@ export default class User extends Vue{
             roleId: this.nowRoleId,
             permissionIds: (this.rolePermissions as any).checked.join(",")
         }
-        const res: any = updateRolePermission(params)
+        const res: any = await updateRolePermission(params)
+        if (res.code === 200) {
+            this.perModalVisible = false
+            message.success('编辑成功')
+        }
     }
 
 }
