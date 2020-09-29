@@ -37,8 +37,8 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
     (response) => {
+        let res = response.data;
         if (encryptModes.indexOf(process.env.VUE_APP_SECURITY_MODE) >= 0) {
-            let res;
             switch (process.env.VUE_APP_SECURITY_MODE) {
                 case encryptModes[0]:
                     res = JSON.parse(AES_CBC_Decrypt(response.data));
@@ -46,13 +46,14 @@ service.interceptors.response.use(
                 case encryptModes[1]:
                     res = JSON.parse(RSA_Decrypt(response.data));
                     break;
-            };
-            if (res.code != '200') {
-                message.error("出错啦", 5);
-                return Promise.reject(new Error(res.message || 'Error'))
-            } else {
-                return response.data;
             }
+        }
+        if (res.code) {
+            res.code = parseInt(res.code)
+        }
+        if (res.code && res.code != 200) {
+            message.error(res.msg ? res.msg : '未知错误');
+            return Promise.resolve(res)
         }
         return response.data;
     },

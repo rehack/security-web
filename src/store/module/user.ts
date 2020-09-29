@@ -119,7 +119,7 @@ class User extends VuexModule implements IUserState {
             throw Error('GetUserInfo: access_token is undefined!');
         }
         const res: any = await getUserInfo();
-        if (res.code === '200') {
+        if (res.code === 200) {
             const data = res.data;
             this.SET_USER_ID(data.userId);
             this.SET_USERNAME(data.username);
@@ -134,7 +134,7 @@ class User extends VuexModule implements IUserState {
     public async LogOut(): Promise<boolean> {
         if (this.access_token != '') {
             const res: any = await doLogout();
-            if (res.code === '200') {
+            if (res.code === 200) {
                 resetRouter();
                 this.ResetToken();
                 this.ResetUserInfo();

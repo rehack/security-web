@@ -48,7 +48,7 @@ template>
                 ...this.pageInfo
             }
             const res: any = await queryUsers(params);
-            if (res.code === '200') {
+            if (res.code === 200) {
                 this.users = res.data.records;
                 this.total = res.data.total;
             }

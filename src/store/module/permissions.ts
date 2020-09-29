@@ -8,6 +8,7 @@ const hasPermission = (permissions: string[], route: RouteRecordRaw) => {
     if (route.meta && route.meta.permissions) {
         return permissions.some(permission => (route.meta as any).permissions.includes(permission))
     }
+    return true;
 };
 
 /** 过滤每个路由, 取出有权限的路由 */
@@ -15,12 +16,12 @@ export const filterAsyncRoutes = (routes: RouteRecordRaw[], permissions: string[
     const res: RouteRecordRaw[] = []
     routes.forEach(route => {
         const r = { ...route };
-        // if (hasPermission(permissions, r)) {
-        if (r.children) {
-            r.children = filterAsyncRoutes(r.children, permissions)
+        if (hasPermission(permissions, r)) {
+            if (r.children) {
+                r.children = filterAsyncRoutes(r.children, permissions)
+            }
+            res.push(r);
         }
-        res.push(r);
-        //}
     });
     return res;
 };
@@ -44,7 +45,7 @@ class Permission extends VuexModule implements IPermissionState {
     @Action
     public GenerateRoutes(roleAndPermission: any) {
         let accessedRoutes;
-        if (roleAndPermission.roles.includes('super')) {
+        if (roleAndPermission.roles.includes('supers')) {
             accessedRoutes = asyncRoutes;
         } else {
             accessedRoutes = filterAsyncRoutes(asyncRoutes, roleAndPermission.permissions)

@@ -64,7 +64,7 @@ export default class User extends Vue{
             ...this.queryRolesParam
         }
         const res: any = await queryRoles(params)
-        if (res.code === '200') {
+        if (res.code === 200) {
             this.roles = res.data.records
             this.total = res.data.total
         }

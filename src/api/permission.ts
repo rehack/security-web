@@ -11,3 +11,23 @@ export const queryPermission = (permissionId: number) =>
         url: '/system/permission/query_permission/' + permissionId,
         method: 'get',
     });
+
+export const updatePermission = (params: any) =>
+    requests({
+        url: '/system/permission/update_permission',
+        method: 'post',
+        params
+    })
+
+export const addPermission = (params: any) =>
+    requests({
+        url: '/system/permission/add_permission',
+        method: 'post',
+        params
+    })
+
+export const deletePermission = (permissionId: number) =>
+    requests({
+        url: '/system/permission/delete_permission/' + permissionId,
+        method: 'delete',
+    })
