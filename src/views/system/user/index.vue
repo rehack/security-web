@@ -16,7 +16,7 @@
             </a-select>
         </a-form-item>
         <a-form-item>
-            <a-select v-model:value="queryUserParams.role" placeholder="用户角色" style="width: 120px" allowClear>
+            <a-select v-model:value="queryUserParams.role" placeholder="用户角色" style="width: 200px" allowClear>
                 <a-select-option v-for="role in roles" :key="role" :value="role">{{role}}</a-select-option>
             </a-select>
         </a-form-item>
@@ -185,7 +185,7 @@ export default class User extends Vue{
     }
 
     get roles() {
-        if (SystemRolesModule.systemRoles.length <= 1) {
+        if (SystemRolesModule.systemRoles.length === 0) {
             SystemRolesModule.initRoles().then(() => {
                 return SystemRolesModule.systemRoles;
             })
