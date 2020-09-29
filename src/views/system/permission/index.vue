@@ -3,7 +3,7 @@
 
     </a-directory-tree>
 
-    <a-modal :title="modalTitle" v-model:visible="modalVisible" @cancel="activeKey = modalOptions[0].key" @ok="save"
+    <a-modal :title="modalTitle" v-model:visible="modalVisible" @cancel="modalCancel" @ok="save"
              :confirm-loading="confirmLoading" :ok-type="modalOkType" :okButtonProps="okButtonProps">
         <a-tabs v-model:active-key="activeKey" @change="tabChange">
             <a-tab-pane v-for="option in modalOptions" :key="option.key" :tab="option.tab">
@@ -127,6 +127,8 @@ export default class User extends Vue{
     private tabChange(key: any) {
         const tab: any = this.modalOptions.filter(item => item.key === key)[0]
         this.activeKey = tab.key
+        this.modalOkType = 'default'
+        this.okButtonProps.disabled = false
         if (tab.key === 2) {
             this.newPermission.parentId = this.nowNode.permissionId
             this.newPermission.parentPermission = this.nowNode.permissionName
@@ -190,6 +192,11 @@ export default class User extends Vue{
             permissionDesc: '',
             type: "1"
         }
+    }
+    private modalCancel() {
+        this.activeKey = this.modalOptions[0].key
+        this.okButtonProps.disabled = false
+        this.modalOkType = 'default'
     }
 
 }
