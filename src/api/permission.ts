@@ -31,3 +31,9 @@ export const deletePermission = (permissionId: number) =>
         url: '/system/permission/delete_permission/' + permissionId,
         method: 'delete',
     })
+
+export const queryByRoleId = (roleId: number) =>
+    requests({
+        url: '/system/permission/query_per_by_role/' + roleId,
+        method: 'get'
+    })

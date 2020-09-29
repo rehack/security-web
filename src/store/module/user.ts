@@ -148,6 +148,15 @@ class User extends VuexModule implements IUserState {
     public hasAccessToken() {
         return hasAccessToken();
     }
+
+    get myPermissions() {
+        if (this.permissions && this.permissions.length > 0) {
+            return this.permissions
+        }
+        this.GetUserInfo().then(() => {
+            return this.permissions
+        })
+    }
 }
 
 export const UserModule = getModule(User);
