@@ -20,7 +20,7 @@
         </a-form-item>
     </a-form>
     <a-table :columns="columns" :data-source="roles" rowKey="roleId" @change="handleChange" :pagination="pagination" :loading="searchLoading" bordered>
-        <template v-slot:state="{text, record, index}">{{text === 1 ? '启用' : '禁用'}}</template>
+        <template v-slot:state="{text, record, index}">{{text === '1' ? '启用' : '禁用'}}</template>
         <template v-slot:operation="{userId, record, index}">
             <a-button type="primary" @click="edit(record)">编辑</a-button>
             <a-button v-if="record.state !== '1'" @click="changeState(record.roleId)">启用</a-button>

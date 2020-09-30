@@ -9,6 +9,7 @@ import '@/icon';
 import '@/permission';
 
 const app = createApp(App);
+const g2plot = require('@antv/g2plot')
 
 app.use(store).use(router).use(Antd).component('svg-icon', SvgIcon).mount('#app');
 app.config.globalProperties.$message = message;
