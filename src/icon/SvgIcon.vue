@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-    import {Prop} from "vue-property-decorator";
+    import {Prop} from "vue-property-decorator"
     import { Options, Vue } from "vue-class-component"
 
     @Options({
@@ -16,17 +16,17 @@
 
     export default class extends Vue{
 
-        @Prop({ default: 'dashboard'}) public iconName!: string;
-        @Prop({ default: 'dashboard'}) public iconClass!: string;
+        @Prop({ default: 'dashboard'}) public iconName!: string
+        @Prop({ default: 'dashboard'}) public iconClass!: string
 
         get iconNames() {
-            return '#icon-' + this.iconName;
+            return '#icon-' + this.iconName
         }
         get svgClass() {
             if (this.iconClass) {
-                return 'svg-icon ' + this.iconClass;
+                return 'svg-icon ' + this.iconClass
             } else {
-                return 'svg-icon';
+                return 'svg-icon'
             }
         }
 

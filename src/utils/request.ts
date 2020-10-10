@@ -1,64 +1,47 @@
-import axios from 'axios'
-import { message } from "ant-design-vue";
-import {AES_CBC_Decrypt, AES_CBC_Encrypt} from "@/utils/crypt";
-import {RSA_Decrypt, RSA_Encrypt} from "@/utils/crypt";
-import { UserModule} from "@/store/module/user";
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
+import { message } from "ant-design-vue"
+import { UserModule} from "@/store/module/user"
+import router from "@/router"
 
-const encryptModes = ['AES', 'RSA'];
 const service = axios.create({
     headers: { 'content-type': 'application/json; charset=utf-8', 'Set-Cookie': 'widget_session=abc123; SameSite=None; Secure' },
     baseURL: process.env.VUE_APP_BASE_API,
-    timeout: 10 * 1000
+    timeout: 500 * 1000,
+    withCredentials: true
 })
 
 service.interceptors.request.use(
-    (config) => {
+    (config: AxiosRequestConfig) => {
         if (UserModule.hasAccessToken()) {
-            config.headers.Authorization = `Bearer ${UserModule.access_token}`;
+            config.headers.Authorization = `Bearer ${UserModule.access_token}`
         }
-        if (encryptModes.indexOf(process.env.VUE_APP_SECURITY_MODE) >= 0) {
-            let data;
-            switch (process.env.VUE_APP_SECURITY_MODE) {
-                case encryptModes[0]:
-                    data = {reqData: AES_CBC_Encrypt(JSON.stringify(config.data))};
-                    break;
-                case encryptModes[1]:
-                    data = {reqData: RSA_Encrypt(JSON.stringify(config.data))};
-                    break;
-            }
-            config.data = data;
-        }
-        return config;
+        return config
     },
     (error) => {
-        Promise.reject(error);
+        Promise.reject(error)
     }
 )
 
 service.interceptors.response.use(
-    (response) => {
-        let res = response.data;
-        if (encryptModes.indexOf(process.env.VUE_APP_SECURITY_MODE) >= 0) {
-            switch (process.env.VUE_APP_SECURITY_MODE) {
-                case encryptModes[0]:
-                    res = JSON.parse(AES_CBC_Decrypt(response.data));
-                    break;
-                case encryptModes[1]:
-                    res = JSON.parse(RSA_Decrypt(response.data));
-                    break;
+    (response: AxiosResponse) => {
+        const res: any = response.data
+        if (res.code === '95' || res.code === '96' || res.code === '201') {
+            message.error(res.msg, 5 )
+            router.replace('/login')
+            return Promise.reject(res)
+        } else if (res.code !== '200') {
+            if (res.code !== 101) {
+                message.error(res.msg || 'Error', 5)
+                return Promise.resolve(res)
+            } else {
+                return Promise.resolve(res)
             }
-        }
-        if (res.code) {
-            res.code = parseInt(res.code)
-        }
-        if (res.code && res.code != 200) {
-            message.error(res.msg ? res.msg : '未知错误');
+        } else {
             return Promise.resolve(res)
         }
-        return response.data;
     },
     (error) => {
-        message.error(error.message, 5);
+        message.error(error.message, 5)
         return Promise.reject(error)
     }
 )

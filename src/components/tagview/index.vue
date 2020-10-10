@@ -9,36 +9,36 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component"
-import {ITagView, TagViewModule} from "@/store/module/tag-views";
-import {Watch} from "vue-property-decorator";
-import {RouteRecordRaw} from "vue-router";
-import path from "path";
-import {PermissionModule} from "@/store/module/permissions";
+import {ITagView, TagViewModule} from "@/store/module/tag-views"
+import {Watch} from "vue-property-decorator"
+import {RouteRecordRaw} from "vue-router"
+import path from "path"
+import {PermissionModule} from "@/store/module/permissions"
 
 @Options({
     name: "tag-view"
 })
 export default class TagView extends Vue {
 
-    private tagThemes = ['pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue', 'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime'];
-    private activeTheme = '#2db7f5';
-    private affixTags: ITagView[] = [];
+    private tagThemes = ['pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue', 'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime']
+    private activeTheme = '#2db7f5'
+    private affixTags: ITagView[] = []
 
     get visitedViews() {
-        return TagViewModule.visitedViews;
+        return TagViewModule.visitedViews
     }
 
     get routes() {
-        return PermissionModule.routes;
+        return PermissionModule.routes
     }
 
     mounted() {
-        this.initTagsView();
+        this.initTagsView()
     }
 
     private getTheme(tag: ITagView): string {
-        const number = Math.floor((Math.random() * 100)) % 13;
-        return this.isActive(tag) ? this.activeTheme : this.tagThemes[number];
+        const number = Math.floor((Math.random() * 100)) % 13
+        return this.isActive(tag) ? this.activeTheme : this.tagThemes[number]
     }
 
     private isActive(route: ITagView) {
@@ -57,7 +57,7 @@ export default class TagView extends Vue {
     }
 
     private routeToPath(tag: ITagView) {
-        this.$router.push(tag.path);
+        this.$router.push(tag.path)
     }
 
     private toLastView(visitedViews: ITagView[], view: ITagView) {
@@ -74,7 +74,7 @@ export default class TagView extends Vue {
     }
 
     private moveToCurrentTag() {
-        const tags = this.$refs.tag as any[];
+        const tags = this.$refs.tag as any[]
         this.$nextTick(() => {
             for (const tag of tags) {
                 if((tag.to as ITagView).path === this.$route.path) {
@@ -87,13 +87,13 @@ export default class TagView extends Vue {
         this.affixTags = this.filterAffixTags(this.routes)
         for (const tag of this.affixTags) {
             if (tag.name) {
-                TagViewModule.addVisitedView(tag);
+                TagViewModule.addVisitedView(tag)
             }
         }
     }
 
     private filterAffixTags(routes: RouteRecordRaw[], basePath = '/') {
-        let tags: ITagView[] = [];
+        let tags: ITagView[] = []
         routes.forEach(route => {
             if (route.meta && route.meta.affix) {
                 const tagPath = path.resolve(basePath, route.path)
@@ -111,20 +111,20 @@ export default class TagView extends Vue {
                 }
             }
         })
-        return tags;
+        return tags
     }
 
     private addTags() {
-        const { name } = this.$route;
+        const { name } = this.$route
         if (name) {
-            TagViewModule.addView(this.$route);
+            TagViewModule.addView(this.$route)
         }
-        return false;
+        return false
     }
 
     @Watch('$route')
     private onRouteChange() {
-        this.addTags();
+        this.addTags()
     }
 }
 </script>

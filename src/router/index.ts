@@ -1,7 +1,6 @@
-import {createRouter, createWebHistory, RouteRecordRaw, ScrollBehavior} from 'vue-router'
-import systemRoutes from "@/router/modules/system";
-import orderRoutes from "@/router/modules/order";
-import Dashboard from "@/views/dashboard/index.vue";
+import {createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import hospitalRoutes from "@/router/modules/hospital"
+import Dashboard from "@/views/dashboard/index.vue"
 
 export const constantRoutes: Array<RouteRecordRaw> = [
   {
@@ -28,8 +27,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 ]
 
 export const asyncRoutes: Array<RouteRecordRaw> = [
-  ...systemRoutes,
-  ...orderRoutes
+  ...hospitalRoutes
 ]
 
 const createRoutes = () => createRouter({

@@ -14,12 +14,12 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { SettingsModule } from "@/store/module/settings";
-import SideBar from "@/components/sidebar/index.vue";
-import TagView from "@/components/tagview/index.vue";
-import NavBar from "@/components/navbar/index.vue";
-import AppMain from "@/components/AppMain.vue";
+import { Options, Vue } from "vue-class-component"
+import { SettingsModule } from "@/store/module/settings"
+import SideBar from "@/components/sidebar/index.vue"
+import TagView from "@/components/tagview/index.vue"
+import NavBar from "@/components/navbar/index.vue"
+import AppMain from "@/components/AppMain.vue"
 
 @Options({
     name: 'dashboard',
@@ -33,19 +33,19 @@ import AppMain from "@/components/AppMain.vue";
 export default class extends Vue {
 
     get tagView() {
-        return SettingsModule.tagView;
+        return SettingsModule.tagView
     }
 
     get navBar() {
-        return  SettingsModule.navbar;
+        return  SettingsModule.navbar
     }
 
     get sideBarClass() {
-        return SettingsModule.menuCollapsed ? "hideSidebar" : "";
+        return SettingsModule.menuCollapsed ? "hideSidebar" : ""
     }
 
     get themeBack() {
-        return SettingsModule.light ? '' : 'un-light';
+        return SettingsModule.light ? '' : 'un-light'
     }
 }
 </script>

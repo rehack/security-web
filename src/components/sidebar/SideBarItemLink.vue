@@ -5,9 +5,9 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { isExternal} from "@/utils/validate";
-import {Prop} from "vue-property-decorator";
+import { Options, Vue } from "vue-class-component"
+import { isExternal} from "@/utils/validate"
+import {Prop} from "vue-property-decorator"
 
 @Options({
     name: 'sidebar-item-link'

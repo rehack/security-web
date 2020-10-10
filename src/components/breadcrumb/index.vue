@@ -10,12 +10,12 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { HomeOutlined } from "@ant-design/icons-vue/lib";
-import {RouteRecordRaw} from "vue-router";
-import {Watch} from "vue-property-decorator";
-import {Route} from "ant-design-vue/types/breadcrumb/breadcrumb";
-import { message } from "ant-design-vue";
+import { Options, Vue } from "vue-class-component"
+import { HomeOutlined } from "@ant-design/icons-vue/lib"
+import {RouteRecordRaw} from "vue-router"
+import {Watch} from "vue-property-decorator"
+import {Route} from "ant-design-vue/types/breadcrumb/breadcrumb"
+import { message } from "ant-design-vue"
 
 @Options({
     name: "bread-crumb",
@@ -25,7 +25,7 @@ import { message } from "ant-design-vue";
 })
 export default class BreakCrumb extends Vue{
 
-    private breadcrumbs: RouteRecordRaw[] = [];
+    private breadcrumbs: RouteRecordRaw[] = []
 
     @Watch("$route")
     private onRouteChange(route: Route) {
@@ -40,7 +40,7 @@ export default class BreakCrumb extends Vue{
     }
 
     private handleLink(item: RouteRecordRaw) {
-        const { redirect, path } = item;
+        const { redirect, path } = item
         if (redirect) {
             this.$router.push(redirect).catch(error => {
                 message.error('迷路啦')
@@ -60,7 +60,7 @@ export default class BreakCrumb extends Vue{
         let matched: RouteRecordRaw[] = this.$route.matched.filter((item) => item.meta && item.meta.title)
         const first = matched[0]
         if (!this.isDashboard(first)) {
-            matched = [{path: '/', redirect: '/dashboard', name: '首页', meta: { title: '首页', root: true }} as RouteRecordRaw].concat(matched);
+            matched = [{path: '/', redirect: '/dashboard', name: '首页', meta: { title: '首页', root: true }} as RouteRecordRaw].concat(matched)
         }
         this.breadcrumbs = matched.filter((item) => {
             return item.meta && item.meta.title

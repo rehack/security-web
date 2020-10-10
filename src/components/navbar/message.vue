@@ -37,8 +37,8 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { BellOutlined } from "@ant-design/icons-vue/lib";
+import { Options, Vue } from "vue-class-component"
+import { BellOutlined } from "@ant-design/icons-vue/lib"
 
 @Options({
     name: 'message',
@@ -48,9 +48,9 @@ import { BellOutlined } from "@ant-design/icons-vue/lib";
 })
 export default class Message extends Vue{
 
-    private tabs = ['公告', '消息', '待办'];
-    private visible = false;
-    private badgeShow = true;
+    private tabs = ['公告', '消息', '待办']
+    private visible = false
+    private badgeShow = true
 
 }
 </script>

@@ -1,6 +1,6 @@
-const resolve = require("path").resolve;
-const devServerPort = 18080;
-const mockServerPort = 18090;
+const resolve = require("path").resolve
+const devServerPort = 8070
+const mockServerPort = 18070
 
 module.exports = {
     publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
@@ -25,8 +25,8 @@ module.exports = {
     },
 
     chainWebpack: (config) => {
-        const svgRule = config.module.rule("svg");
-        svgRule.uses.clear();
+        const svgRule = config.module.rule("svg")
+        svgRule.uses.clear()
         svgRule
             .use("svg-sprite-loader")
             .loader("svg-sprite-loader")
@@ -35,7 +35,7 @@ module.exports = {
                     symbolId: 'icon-[name]',
                     include: ['./src/icon']
                 }
-            );
+            )
     },
 
     css:{

@@ -1,5 +1,5 @@
 {
-  "name": "ShopMall",
+  "name": "meisou-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^5.1.5",
-    "@antv/g2plot": "^2.0.1",
     "@types/crypto-js": "^3.1.47",
     "@types/js-cookie": "^2.2.6",
     "@types/node": "^14.11.2",

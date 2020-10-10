@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { TagViewModule } from "@/store/module/tag-views";
-import {Watch} from "vue-property-decorator";
+import { Options, Vue } from "vue-class-component"
+import { TagViewModule } from "@/store/module/tag-views"
+import {Watch} from "vue-property-decorator"
 
 @Options({
     name: 'app-main'
@@ -19,11 +19,11 @@ import {Watch} from "vue-property-decorator";
 export default class AppMain extends Vue{
 
     get key() {
-        return this.$route.path;
+        return this.$route.path
     }
 
     get cachedViews() {
-        return TagViewModule.cachedViews;
+        return TagViewModule.cachedViews
     }
 }
 </script>

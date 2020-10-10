@@ -4,7 +4,7 @@
             <a-menu-item key="dashboard" @click="toDashboard">
                 <a-row :class="light ? 'top-content' : 'top-content-black'">
                     <span v-if="!collapsed">
-                        ShopMall
+                        MeSoo
                     </span>
                     <svg-icon v-else iconName="shopmall" />
                 </a-row>
@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { SettingsModule } from "@/store/module/settings";
-import { PermissionModule } from "@/store/module/permissions";
-import SideBarItem from "@/components/sidebar/SideBarItem.vue";
+import { Options, Vue } from "vue-class-component"
+import { SettingsModule } from "@/store/module/settings"
+import { PermissionModule } from "@/store/module/permissions"
+import SideBarItem from "@/components/sidebar/SideBarItem.vue"
 
 @Options({
     name: 'dashboard',
@@ -28,22 +28,22 @@ import SideBarItem from "@/components/sidebar/SideBarItem.vue";
 })
 export default class extends Vue {
 
-    private menuWidth = '200px';
+    private menuWidth = '200px'
 
     get collapsed() {
-        return SettingsModule.menuCollapsed;
+        return SettingsModule.menuCollapsed
     }
 
     get routes() {
-        return PermissionModule.routes;
+        return PermissionModule.routes
     }
 
     get theme() {
-        return SettingsModule.light ? 'light' : 'dark';
+        return SettingsModule.light ? 'light' : 'dark'
     }
 
     get light() {
-        return SettingsModule.light;
+        return SettingsModule.light
     }
 
     private toDashboard() {

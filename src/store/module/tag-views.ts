@@ -1,9 +1,9 @@
-import {Action, getModule, Module, Mutation, VuexModule} from "vuex-module-decorators";
-import store from "@/store";
-import {RouteRecordRaw} from "vue-router";
+import {Action, getModule, Module, Mutation, VuexModule} from "vuex-module-decorators"
+import store from "@/store"
+import {RouteRecordRaw} from "vue-router"
 
 export interface ITagView extends Partial<any>{
-    title?: string;
+    title?: string
 }
 
 export interface ITagsViewState {
@@ -15,8 +15,8 @@ export interface ITagsViewState {
 @Module({dynamic: true, name: "tagViews", store})
 class TagViews extends VuexModule implements ITagsViewState {
 
-    public visitedViews: ITagView[] = [];
-    public cachedViews: (string | undefined)[] = [];
+    public visitedViews: ITagView[] = []
+    public cachedViews: (string | undefined)[] = []
 
     @Mutation
     private ADD_VISITED_VIEW(view: ITagView) {
@@ -81,7 +81,7 @@ class TagViews extends VuexModule implements ITagsViewState {
 
     @Mutation
     private DEL_ALL_CACHED_VIEWS() {
-        this.cachedViews = [];
+        this.cachedViews = []
     }
 
     @Mutation
@@ -94,24 +94,24 @@ class TagViews extends VuexModule implements ITagsViewState {
 
     @Action
     public addView(view: ITagView) {
-        this.ADD_VISITED_VIEW(view);
-        this.ADD_CACHED_VIEW(view);
+        this.ADD_VISITED_VIEW(view)
+        this.ADD_CACHED_VIEW(view)
     }
 
     @Action
     public addVisitedView(view: ITagView) {
-        this.ADD_VISITED_VIEW(view);
+        this.ADD_VISITED_VIEW(view)
     }
 
     @Action
     public delVisitedView(view: ITagView) {
-        this.DEL_VISITED_VIEW(view);
+        this.DEL_VISITED_VIEW(view)
     }
 
     @Action
     public delView(view: ITagView) {
-        this.DEL_VISITED_VIEW(view);
-        this.DEL_CACHED_VIEW(view);
+        this.DEL_VISITED_VIEW(view)
+        this.DEL_CACHED_VIEW(view)
     }
 
     @Action

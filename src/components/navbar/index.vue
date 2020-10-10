@@ -14,13 +14,13 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { MenuFoldOutlined, MenuUnfoldOutlined, RocketOutlined, RocketTwoTone }from "@ant-design/icons-vue";
-import { SettingsModule} from "@/store/module/settings";
-import Breadcrumb from "@/components/breadcrumb/index.vue";
-import User from "@/components/navbar/user.vue";
-import Message from "@/components/navbar/message.vue";
-import Out from "@/components/navbar/out.vue";
+import { Options, Vue } from "vue-class-component"
+import { MenuFoldOutlined, MenuUnfoldOutlined, RocketOutlined, RocketTwoTone }from "@ant-design/icons-vue"
+import { SettingsModule} from "@/store/module/settings"
+import Breadcrumb from "@/components/breadcrumb/index.vue"
+import User from "@/components/navbar/user.vue"
+import Message from "@/components/navbar/message.vue"
+import Out from "@/components/navbar/out.vue"
 
 @Options({
     name: 'nav-bar',
@@ -38,19 +38,19 @@ import Out from "@/components/navbar/out.vue";
 export default class navBar extends Vue{
 
     get menuCollapsed() {
-        return SettingsModule.menuCollapsed;
+        return SettingsModule.menuCollapsed
     }
 
     get light() {
-        return SettingsModule.light;
+        return SettingsModule.light
     }
 
     private foldOrUnFold() {
-        SettingsModule.changeMenuCollapsed();
+        SettingsModule.changeMenuCollapsed()
     }
 
     private lightOrUnLight() {
-        SettingsModule.changeMenuLight();
+        SettingsModule.changeMenuLight()
     }
 
 }

@@ -19,8 +19,8 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { UserModule } from "@/store/module/user";
+import { Options, Vue } from "vue-class-component"
+import { UserModule } from "@/store/module/user"
 
 @Options({
     name: 'user'
@@ -28,7 +28,7 @@ import { UserModule } from "@/store/module/user";
 export default class User extends Vue{
 
     get nickname() {
-        return UserModule.nickname;
+        return UserModule.nickname
     }
 }
 </script>

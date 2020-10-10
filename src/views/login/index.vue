@@ -49,7 +49,7 @@ export default class Login extends Vue {
             { validator: this.checkPassword ,message: '请输入密码', trigger: 'blur' }
         ]
     }
-    private isLoginReqLoading = false;
+    private isLoginReqLoading = false
 
     public loginForm = {
         username: '',
@@ -61,15 +61,15 @@ export default class Login extends Vue {
         (this.$refs.loginRef as any).validate().then(() => {
             UserModule.Login(this.loginForm).then((loginState) => {
                 if (loginState) {
-                    this.$router.push("/dashboard");
+                    this.$router.push("/dashboard")
                 } else {
-                    message.error("用户名或密码错误");
+                    message.error("用户名或密码错误")
                 }
-                this.isLoginReqLoading = false;
+                this.isLoginReqLoading = false
             })
         }).catch(() => {
-            Promise.reject('登录失败');
-            this.isLoginReqLoading = false;
+            Promise.reject('登录失败')
+            this.isLoginReqLoading = false
         })
     }
 
@@ -77,7 +77,7 @@ export default class Login extends Vue {
         if (value === '') {
             return Promise.reject('请输入密码')
         }
-        return Promise.resolve();
+        return Promise.resolve()
     }
 
 }

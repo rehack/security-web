@@ -19,13 +19,13 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue} from "vue-class-component";
-import { Prop } from "vue-property-decorator";
-import {RouteRecordRaw} from "vue-router";
-import SideBarItemLink from "@/components/sidebar/SideBarItemLink.vue";
-import { UserOutlined, SafetyOutlined,InfoCircleOutlined, AppstoreTwoTone } from "@ant-design/icons-vue";
-import {ITagView} from "@/store/module/tag-views";
-import path from "path";
+import { Options, Vue} from "vue-class-component"
+import { Prop } from "vue-property-decorator"
+import {RouteRecordRaw} from "vue-router"
+import SideBarItemLink from "@/components/sidebar/SideBarItemLink.vue"
+import { UserOutlined, SafetyOutlined,InfoCircleOutlined, AppstoreTwoTone } from "@ant-design/icons-vue"
+import {ITagView} from "@/store/module/tag-views"
+import path from "path"
 import { isExternal } from '@/utils/validate'
 
 @Options({
@@ -39,7 +39,7 @@ import { isExternal } from '@/utils/validate'
 
 export default class SideBarItem extends Vue{
 
-    @Prop({value : "item"}) public item!: RouteRecordRaw;
+    @Prop({value : "item"}) public item!: RouteRecordRaw
 
     private hasChild(): boolean {
         if (this.item.meta?.root) {
@@ -49,15 +49,15 @@ export default class SideBarItem extends Vue{
             return false;
         }
         if (this.item.children) {
-            return this.item.children.length > 0;
+            return this.item.children.length > 0
         }
-        return false;
+        return false
     }
 
     private getMenuIcon(icon: string) {
-        const iconHtml = '<' + icon + '/>';
+        const iconHtml = '<' + icon + '/>'
         console.log(iconHtml)
-        return iconHtml;
+        return iconHtml
     }
 
 }
