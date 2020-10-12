@@ -61,7 +61,7 @@
         </a-form>
     </a-modal>
 
-    <a-modal title="商品列表" v-model:visible="goodsListVisible" :footer="null" width="1200px">
+    <a-modal title="商品列表" v-model:visible="goodsListVisible" :footer="null" width="1200px" @cancel="cancelGoodsList">
         <a-table :columns="goodsColumns" :data-source="goods" rowKey="cpId" @change="handleGoodsListChange"
                  :pagination="goodsPagination" :loading="goodsSearchLoading" :scroll="{ x: 1000, y: 600 }" bordered>
             <template v-slot:goodsTags="{text, record, index}">
@@ -117,6 +117,7 @@ export default class HospitalGoods extends Vue{
     ]
     private goodsPagination = {
         total: 0,
+        current: 1,
         pageSize: 50,
         showSizeChanger: true,
         pageSizeOptions: ['10', '20', '50'],
@@ -184,6 +185,7 @@ export default class HospitalGoods extends Vue{
         if (res.code === '200') {
             this.goods = res.data.list
             this.goodsPagination.total = parseInt(res.data.total)
+            this.goodsPagination.current = parseInt(res.data.pageNum)
         }
         this.goodsSearchLoading = false
     }
@@ -267,6 +269,12 @@ export default class HospitalGoods extends Vue{
         this.goodsListVisible = true
         this.hsId = hsId
         this.initGoodsListData()
+    }
+    private cancelGoodsList() {
+        this.goodsPageInfo = {
+            page: 1,
+            limit: 50
+        }
     }
 
     private async refresh(hsId: any) {
