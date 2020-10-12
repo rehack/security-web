@@ -21,11 +21,10 @@ export const updateHospital = (params: any) =>
         params
     })
 
-export const deleteHospital = (params: any) =>
+export const deleteHospital = (hsId: any) =>
     requests({
-        url: '/ms_hospital/d_hospital',
-        method: 'post',
-        params
+        url: '/ms_hospital/d_hs_goods/' + hsId,
+        method: 'post'
     })
 
 export const queryGoodsList = (params: any) =>

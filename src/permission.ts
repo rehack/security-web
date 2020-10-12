@@ -10,9 +10,9 @@ NProgress.configure({ showSpinner: false })
 const whiteList = ['/login', '/auth-redirect', '/test']
 
 const getPageTitle = (key: string) => {
-  if (key) {
+  /*if (key) {
       return key
-  }
+  }*/
   return `${SettingsModule.title}`
 }
 
@@ -57,5 +57,5 @@ router.beforeEach(async(to: RouteLocationNormalized,  from: RouteLocationNormali
 
 router.afterEach((to: RouteLocationNormalized) => {
     NProgress.done()
-    // document.title = getPageTitle(to.meta.title);
+    document.title = getPageTitle(to.meta.title);
 });

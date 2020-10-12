@@ -1,6 +1,6 @@
 const resolve = require("path").resolve
-const devServerPort = 8070
-const mockServerPort = 18070
+const devServerPort = 9040
+const mockServerPort = 19040
 
 module.exports = {
     publicPath: process.env.NODE_ENV === "production" ? "./" : "/",

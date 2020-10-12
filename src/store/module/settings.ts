@@ -13,7 +13,7 @@ export interface ISettings {
 class Settings extends VuexModule implements ISettings {
 
     public menuCollapsed = false
-    public title = "ShopMall"
+    public title = "美搜Crm系统"
     public tagView = true
     public navbar = true
     public light = true

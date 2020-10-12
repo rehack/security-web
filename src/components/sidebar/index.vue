@@ -6,7 +6,7 @@
                     <span v-if="!collapsed">
                         MeSoo
                     </span>
-                    <svg-icon v-else iconName="shopmall" />
+                    <svg-icon v-else iconName="search" />
                 </a-row>
             </a-menu-item>
             <sidebar-item v-for="route in routes" :key="route.path" :item="route"></sidebar-item>

@@ -1,9 +1,12 @@
 {
-  "name": "meisou-web",
+  "name": "mesoo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve --mode local",
+    "build:prod": "vue-cli-service build --mode production",
+    "build:qa": "vue-cli-service build --mode development",
+    "build:stage": "vue-cli-service build --mode staging",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "svgo": "svgo -f src/icon/svg --config=src/icon/svgo.yml"

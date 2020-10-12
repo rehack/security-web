@@ -9,7 +9,7 @@ export const hospitalRoutes: Array<RouteRecordRaw> = [
         children: [
             {
                 path: '/hospital/hospital-goods',
-                name: '医院商品',
+                name: 'hospital-goods',
                 meta: {hidden: false, title: "医院数据"},
                 component: () => import('@/views/hospital/index.vue')
             }

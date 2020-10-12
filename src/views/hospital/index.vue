@@ -19,13 +19,15 @@
             <span>{{++index}}</span>
         </template>
         <template v-slot:operation="{text, record, index}">
-            <a-button type="primary" :disabled="refreshDisabled" @click="refresh(record.hsId)">刷新</a-button>
-            <a-button @click="toEdit(record)" >编辑</a-button>
-            <a-popconfirm title="该操作会删除该医院下的所有商品，是否继续？" cancelText="取消" okText="确定" @confirm="remove(record.hsId)">
-                <template v-slot:icon><question-circle-outlined style="color: red"/></template>
-                <a-button type="danger">删除</a-button>
-            </a-popconfirm>
-            <a-button @click="toGoodsList(record.hsId)">查看商品</a-button>
+            <div class="operations">
+                <a-button type="primary" :disabled="refreshDisabled" @click="refresh(record.hsId)">刷新</a-button>
+                <a-button @click="toEdit(record)" >编辑</a-button>
+                <a-popconfirm title="该操作会删除该医院下的所有商品，是否继续？" cancelText="取消" okText="确定" @confirm="remove(record.hsId)">
+                    <template v-slot:icon><question-circle-outlined style="color: red"/></template>
+                    <a-button type="danger">删除</a-button>
+                </a-popconfirm>
+                <a-button @click="toGoodsList(record.hsId)">查看商品</a-button>
+            </div>
         </template>
     </a-table>
 
@@ -37,7 +39,9 @@
                 </a-select>
             </a-form-item>
             <a-form-item name="openId" label="医院ID" :label-col="labelCol" :wrapper-col="wrapperCol">
-                <a-input v-model:value="newHospital.openId" autocomplete="off" />
+                <a-input v-model:value="newHospital.openId" autocomplete="off">
+                    <template v-slot:prefix><container-outlined/></template>
+                </a-input>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -50,7 +54,9 @@
                 </a-select>
             </a-form-item>
             <a-form-item name="openId" label="医院ID" :label-col="labelCol" :wrapper-col="wrapperCol">
-                <a-input v-model:value="editHospital.openId" autocomplete="off" />
+                <a-input v-model:value="editHospital.openId" autocomplete="off">
+                    <template v-slot:prefix><container-outlined/></template>
+                </a-input>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -69,12 +75,13 @@
 import { Options, Vue } from "vue-class-component"
 import { queryHospitals, addHospital, updateHospital, deleteHospital, queryGoodsList, updateHospitalData } from "@/api/hospital"
 import {message} from "ant-design-vue"
-import { QuestionCircleOutlined } from "@ant-design/icons-vue/lib"
+import { QuestionCircleOutlined, ContainerOutlined } from "@ant-design/icons-vue/lib"
 
 @Options({
     name: 'hospital-goods',
     components: {
-        QuestionCircleOutlined
+        QuestionCircleOutlined,
+        ContainerOutlined
     }
 })
 export default class HospitalGoods extends Vue{
@@ -208,6 +215,7 @@ export default class HospitalGoods extends Vue{
                 }
                 this.addVisible = false
                 this.addLoading = false
+                this.initHospitalData()
             })
         }).catch(() => {
             Promise.reject('新增失败')
@@ -246,13 +254,13 @@ export default class HospitalGoods extends Vue{
     }
 
     private async remove(hsId: any) {
-        const params: any = {
-            hsId
-        }
-        /*const res: any = await deleteHospital(params)
+        this.refreshDisabled = true
+        const res: any = await deleteHospital(hsId)
         if (res.code === '200') {
             message.success('删除成功')
-        }*/
+        }
+        this.refreshDisabled = false
+        this.initHospitalData()
     }
 
     private async toGoodsList(hsId: any) {
@@ -271,6 +279,14 @@ export default class HospitalGoods extends Vue{
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.operations {
+    display: flex;
+    justify-content: flex-start;
 
+    * {
+        display: block;
+        margin-right: 5px;
+    }
+}
 </style>

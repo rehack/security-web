@@ -119,6 +119,7 @@ export default class TagView extends Vue {
         if (name) {
             TagViewModule.addView(this.$route)
         }
+        console.log(TagViewModule.cachedViews)
         return false
     }
 
