@@ -104,7 +104,7 @@ export default class HospitalGoods extends Vue{
         { title: '序号', dataIndex: 'index', width: '10%', slots: {customRender: 'hsIndex'} },
         { title: '医院名称', dataIndex: 'hsName', width: '20%' },
         { title: '源类型', dataIndex: 'hsPlatform', width: '10%' },
-        { title: '医院ID', dataIndex: 'hsId', width: '15%' },
+        { title: '医院ID', dataIndex: 'openId', width: '15%' },
         { title: '最近更新时间', dataIndex: 'updateTime', width: '20%' },
         {title: '操作', dataIndex: 'operations', width: '25%', slots: { customRender: 'operation' }}
     ]
