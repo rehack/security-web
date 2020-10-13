@@ -22,16 +22,13 @@
             <div class="operations">
                 <a-button type="primary" :disabled="refreshDisabled" @click="refresh(record.hsId)">刷新</a-button>
                 <a-button @click="toEdit(record)" >编辑</a-button>
-                <a-popconfirm title="该操作会删除该医院下的所有商品，是否继续？" cancelText="取消" okText="确定" @confirm="remove(record.hsId)">
-                    <template v-slot:icon><question-circle-outlined style="color: red"/></template>
-                    <a-button type="danger">删除</a-button>
-                </a-popconfirm>
+                <a-button type="danger" @click="toRemove(record.hsId)">删除</a-button>
                 <a-button @click="toGoodsList(record.hsId)">查看商品</a-button>
             </div>
         </template>
     </a-table>
 
-    <a-modal title="新增" v-model:visible="addVisible" :confirm-loading="addLoading" @ok="addHospital">
+    <a-modal title="新增" v-model:visible="addVisible" :confirm-loading="addLoading" @ok="addHospital" okText="确定" cancelText="取消">
         <a-form :model="newHospital" ref="newHsRef" :rules="newHsRules">
             <a-form-item name="hsPlatform" label="源类型" :label-col="labelCol" :wrapper-col="wrapperCol">
                 <a-select v-model:value="newHospital.hsPlatform" placeholder="源类型" allowClear>
@@ -46,7 +43,7 @@
         </a-form>
     </a-modal>
 
-    <a-modal title="编辑" v-model:visible="editVisible" :confirm-loading="editLoading" @ok="updateHospital" @cancel="cancelEdit">
+    <a-modal title="编辑" v-model:visible="editVisible" :confirm-loading="editLoading" @ok="updateHospital" @cancel="cancelEdit" okText="确定" cancelText="取消">
         <a-form :model="editHospital" ref="editHsRef" :rules="newHsRules">
             <a-form-item name="hsPlatform" label="源类型" :label-col="labelCol" :wrapper-col="wrapperCol">
                 <a-select v-model:value="editHospital.hsPlatform" placeholder="源类型" allowClear>
@@ -68,6 +65,10 @@
                 <span v-for="(txt, index) in text.split(',')" :key="txt">【{{txt}}】</span>
             </template>
         </a-table>
+    </a-modal>
+
+    <a-modal title="确认删除?" v-model:visible="deleteVisible" okText="确定" cancelText="取消" @ok="remove">
+        <a-alert message="该操作会删除该医院下的所有商品，是否继续?" type="error" />
     </a-modal>
 </template>
 
@@ -156,6 +157,8 @@ export default class HospitalGoods extends Vue{
     private goodsListVisible = false
     private hsId = ''
     private refreshDisabled = false
+    private deleteVisible = false
+    private deleteHsId = ''
 
 
     created() {
@@ -255,13 +258,14 @@ export default class HospitalGoods extends Vue{
         }
     }
 
-    private async remove(hsId: any) {
+    private async remove() {
         this.refreshDisabled = true
-        const res: any = await deleteHospital(hsId)
+        const res: any = await deleteHospital(this.deleteHsId)
         if (res.code === '200') {
             message.success('删除成功')
         }
         this.refreshDisabled = false
+        this.deleteVisible = false
         this.initHospitalData()
     }
 
@@ -283,6 +287,11 @@ export default class HospitalGoods extends Vue{
         if (res.code === '200') {
             this.refreshDisabled = false
         }
+    }
+
+    private toRemove(hsId: any) {
+        this.deleteHsId = hsId
+        this.deleteVisible = true
     }
 }
 </script>
