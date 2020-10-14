@@ -1,7 +1,7 @@
 <template>
     <a-form :model="queryHospitalParams" ref="hospitalFilterRef" layout="inline">
         <a-form-item>
-            <a-input placeholder="医院ID" v-model:value="queryHospitalParams.hsId" autocomplete="off" allowClear />
+            <a-input placeholder="医院ID" v-model:value="queryHospitalParams.openId" autocomplete="off" allowClear />
         </a-form-item>
         <a-form-item>
             <a-input placeholder="医院名称" v-model:value="queryHospitalParams.hsName" autocomplete="off" allowClear />
