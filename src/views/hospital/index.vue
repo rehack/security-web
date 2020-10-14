@@ -89,14 +89,6 @@ export default class HospitalGoods extends Vue{
 
     private searchLoading = false
     private goodsSearchLoading = false
-    private pageInfo = {
-        page: 1,
-        limit: 10
-    }
-    private goodsPageInfo = {
-        page: 1,
-        limit: 50
-    }
     private queryHospitalParams = {
         openId: '',
         hsName: '',
@@ -106,7 +98,7 @@ export default class HospitalGoods extends Vue{
         { title: '医院名称', dataIndex: 'hsName', width: '20%' },
         { title: '源类型', dataIndex: 'hsPlatform', width: '10%' },
         { title: '医院ID', dataIndex: 'openId', width: '15%' },
-        { title: '最近更新时间', dataIndex: 'updateTime', width: '20%' },
+        { title: '最近更新时间', dataIndex: 'syncTime', width: '20%' },
         {title: '操作', dataIndex: 'operations', width: '25%', slots: { customRender: 'operation' }}
     ]
     private goodsColumns = [
@@ -127,6 +119,7 @@ export default class HospitalGoods extends Vue{
     }
     private pagination = {
         total: 0,
+        current: 1,
         pageSize: 10,
         showSizeChanger: true,
         showQuickJumper: true,
@@ -169,7 +162,8 @@ export default class HospitalGoods extends Vue{
         this.searchLoading = true
         const params = {
             ...this.queryHospitalParams,
-            ...this.pageInfo
+            page: this.pagination.current,
+            limit: this.pagination.pageSize
         }
         const res: any = await queryHospitals(params)
         if (res.code === '200') {
@@ -181,26 +175,26 @@ export default class HospitalGoods extends Vue{
     private async initGoodsListData() {
         const params: any = {
             hsId: this.hsId,
-            ...this.goodsPageInfo
+            page: this.goodsPagination.current,
+            limit: this.goodsPagination.pageSize
         }
         this.goodsSearchLoading = true
         const res: any = await queryGoodsList(params)
         if (res.code === '200') {
             this.goods = res.data.list
             this.goodsPagination.total = parseInt(res.data.total)
-            this.goodsPagination.current = parseInt(res.data.pageNum)
         }
         this.goodsSearchLoading = false
     }
 
     private handleChange(pagination: any) {
-        this.pageInfo.page = pagination.current;
-        this.pageInfo.limit = pagination.pageSize;
+        this.pagination.current = pagination.current;
+        this.pagination.pageSize = pagination.pageSize;
         this.initHospitalData();
     }
     private handleGoodsListChange(pagination: any) {
-        this.goodsPageInfo.page = pagination.current;
-        this.goodsPageInfo.limit = pagination.pageSize;
+        this.goodsPagination.current = pagination.current;
+        this.goodsPagination.pageSize = pagination.pageSize;
         this.initGoodsListData()
     }
 
@@ -275,10 +269,8 @@ export default class HospitalGoods extends Vue{
         this.initGoodsListData()
     }
     private cancelGoodsList() {
-        this.goodsPageInfo = {
-            page: 1,
-            limit: 50
-        }
+        this.goodsPagination.current = 1
+        this.goodsPagination.pageSize = 50
     }
 
     private async refresh(hsId: any) {
