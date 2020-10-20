@@ -1,5 +1,22 @@
 <template>
-    <h2>您好: {{nickname}}</h2>
+    <a-row :gutter="24" id="topItems">
+        <a-col :span="topItemSpan">
+            <a-card>
+            </a-card>
+        </a-col>
+        <a-col :span="topItemSpan">
+            <a-card>
+            </a-card>
+        </a-col>
+        <a-col :span="topItemSpan">
+            <a-card>
+            </a-card>
+        </a-col>
+        <a-col :span="topItemSpan">
+            <a-card>
+            </a-card>
+        </a-col>
+    </a-row>
 </template>
 
 <script lang="ts">
@@ -11,13 +28,18 @@ import { UserModule } from "@/store/module/user";
 })
 export default class HomePage extends Vue {
 
-    get nickname() {
-        return UserModule.nickname
-    }
+    private topItemSpan = 6;
+
 }
 </script>
 
 <style lang="scss" scoped>
-
+#topItems {
+    .ant-card {
+        width: 400px;
+        height: 400px;
+        background-color: #3A71A8;
+    }
+}
 </style>
 
