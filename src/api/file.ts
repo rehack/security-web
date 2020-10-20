@@ -27,3 +27,18 @@ export const downloadByIds = (params: any) =>
         responseType: 'blob',
         params
     })
+
+export const scanFilesFromServer = (params: any) =>
+    requests({
+        url: '/search/sfs',
+        method: 'get',
+        params
+    })
+
+export const downloadByPath = (params: any) =>
+    requests({
+        url: '/downloader/downloadByPath',
+        method: 'get',
+        responseType: 'blob',
+        params
+    })

@@ -12,6 +12,12 @@ export const fileRoutes: Array<RouteRecordRaw> = [
                 name: 'file-DB',
                 meta: { hidden: false, title: "文件管理" },
                 component: () => import('@/views/file/index.vue')
+            },
+            {
+                path: '/file/file-server',
+                name: 'file-server',
+                meta: { hidden: false, title: '服务器扫描'},
+                component: () => import('@/views/file/server.vue')
             }
         ]
     },

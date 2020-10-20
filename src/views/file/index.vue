@@ -7,10 +7,10 @@
             <a-input placeholder="文件名称" v-model:value="queryFileParam.fileName" autocomplete="off" allowClear />
         </a-form-item>
         <a-form-item>
-            <a-input placeholder="文件大小起" style="width: 150px" v-model:value="queryFileParam.fileSizeStart" @blur="resetFileSize" autocomplete="off" allowClear />
+            <a-input placeholder="文件大小起" style="width: 120px" v-model:value="queryFileParam.fileSizeStart" @blur="resetFileSize" autocomplete="off" allowClear />
         </a-form-item>
         <a-form-item>
-            <a-input placeholder="文件大小止" style="width: 150px"  v-model:value="queryFileParam.fileSizeEnd" @blur="resetFileSize" autocomplete="off" allowClear />
+            <a-input placeholder="文件大小止" style="width: 120px"  v-model:value="queryFileParam.fileSizeEnd" @blur="resetFileSize" autocomplete="off" allowClear />
         </a-form-item>
         <a-form-item>
             <a-select v-model:value="checkedFileSizeFormat" style="width: 120px" placeholder="文件单位" @change="resetFileSize" allowClear>
@@ -89,10 +89,10 @@ export default class FileDB extends Vue{
     private pagination = {
         total: 0,
         current: 1,
-        pageSize: 10,
+        pageSize: 6,
         showSizeChanger: true,
         showQuickJumper: true,
-        pageSizeOptions: ['10', '20', '50'],
+        pageSizeOptions: ['6', '10', '20', '50'],
         showTotal: (total: any, range: any) => `显示第${range[0]}-${range[1]}条记录,共${total}条 `
     }
     private selectedIds: any[] = []
