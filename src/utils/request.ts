@@ -25,6 +25,9 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     (response: AxiosResponse) => {
         const res: any = response.data
+        if (res.size && res.type) {
+            return Promise.resolve(res)
+        }
         if (res.code === '95' || res.code === '96' || res.code === '201') {
             message.error(res.msg, 5 )
             router.replace('/login')

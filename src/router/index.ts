@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import hospitalRoutes from "@/router/modules/hospital"
+import fileRoutes from "@/router/modules/files"
 import Dashboard from "@/views/dashboard/index.vue"
 
 /** route.name: 组件名称,用于组件缓存
@@ -31,7 +31,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 ]
 
 export const asyncRoutes: Array<RouteRecordRaw> = [
-  ...hospitalRoutes
+  ...fileRoutes
 ]
 
 const createRoutes = () => createRouter({

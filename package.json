@@ -1,5 +1,5 @@
 {
-  "name": "mesoo",
+  "name": "file-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -22,6 +22,7 @@
     "core-js": "^3.6.5",
     "crypto-js": "^4.0.0",
     "encryptlong": "^3.1.4",
+    "iclipboard": "^1.0.1",
     "js-cookie": "^2.2.1",
     "less": "^3.12.2",
     "less-loader": "^6.2.0",

@@ -1,7 +1,7 @@
 <template>
     <a-dropdown>
         <span class="user-dropdown">
-            <a-avatar size="small" src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" />
+            <a-avatar size="small" src="http://123.58.210.7:8888/group1/M00/00/00/ezrSB1-Oa5SAKiipAAAv40OjcfE747.png" />
             <span>{{nickname}}</span>
         </span>
         <template v-slot:overlay>

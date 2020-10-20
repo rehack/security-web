@@ -4,7 +4,7 @@
             <a-menu-item key="dashboard" @click="toDashboard">
                 <a-row :class="light ? 'top-content' : 'top-content-black'">
                     <span v-if="!collapsed">
-                        MeSoo
+                        Dashboard
                     </span>
                     <svg-icon v-else iconName="search" />
                 </a-row>
