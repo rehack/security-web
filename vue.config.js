@@ -1,20 +1,20 @@
-const resolve = require("path").resolve
-const devServerPort = 9040
-const mockServerPort = 19040
+const resolve = require('path').resolve
+
+const port = process.env.port || process.env.npm_config_port || 9040
 
 module.exports = {
-    publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
+    publicPath: '/',
 
     outputDir: "dist",
     assetsDir: "assets",
     filenameHashing: false,
-
+    productionSourceMap: false,
     lintOnSave: false,
     runtimeCompiler: false,
 
     configureWebpack: (config) => {
         config.resolve = {
-            extensions: ['.ts', '.json', '.vue', '.js'],
+            extensions: ['.ts', '.json', '.vue', '.js', '.css'],
             alias: {
                 '@': resolve(__dirname, './src'),
             }
@@ -58,7 +58,7 @@ module.exports = {
 
     devServer: {
         host: "localhost",
-        port: devServerPort, // 端口号
+        port: port, // 端口号
         https: false, // https:{type:Boolean}
         open: true, //配置自动启动浏览器
         // 配置多个代理
