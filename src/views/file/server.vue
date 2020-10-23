@@ -64,7 +64,7 @@ export default class FileServer extends Vue{
     private async initFileData() {
         this.searchLoading = true
         const res: any = await scanFilesFromServer(this.queryFileParam)
-        if (res.code === '200') {
+        if (res.code === 200) {
             message.success(`已扫描到${res.data.length}个文件`)
             this.fileData = res.data
         }

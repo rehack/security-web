@@ -1,15 +1,14 @@
 const resolve = require('path').resolve
-
+const CompressionPlugin = require("compression-webpack-plugin")
 const port = process.env.port || process.env.npm_config_port || 9040
 
 module.exports = {
     publicPath: '/',
-
+    lintOnSave: false,
     outputDir: "dist",
     assetsDir: "assets",
     filenameHashing: false,
     productionSourceMap: false,
-    lintOnSave: false,
     runtimeCompiler: false,
 
     configureWebpack: (config) => {
@@ -21,6 +20,15 @@ module.exports = {
         }
         if (process.env.NODE_ENV === 'development') {
             config.devtool = 'source-map'
+        }
+        if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') {
+            return {
+                plugins: [new CompressionPlugin({
+                    test: /\.ts$|\.html$|\.css$|\.js/,
+                    threshold: 1024,
+                    deleteOriginalAssets: false
+                })]
+            }
         }
     },
 

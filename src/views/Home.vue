@@ -49,7 +49,7 @@ export default class HomePage extends Vue {
     private uploadListChange(info: any) {
         if (info.file.status === 'done') {
             const res: any = info.file.response
-            if (res.code === '200') {
+            if (res.code === 200) {
                 message.success('上传成功')
             } else {
                 message.error(res.msg)

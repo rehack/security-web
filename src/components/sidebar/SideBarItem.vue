@@ -54,12 +54,6 @@ export default class SideBarItem extends Vue{
         return false
     }
 
-    private getMenuIcon(icon: string) {
-        const iconHtml = '<' + icon + '/>'
-        console.log(iconHtml)
-        return iconHtml
-    }
-
 }
 </script>
 

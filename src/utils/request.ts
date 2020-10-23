@@ -4,7 +4,7 @@ import { UserModule} from "@/store/module/user"
 import router from "@/router"
 
 const service = axios.create({
-    headers: { 'content-type': 'application/json; charset=utf-8', 'Set-Cookie': 'widget_session=abc123; SameSite=None; Secure' },
+    headers: { 'content-type': 'application/json; charset=utf-8' },
     baseURL: process.env.VUE_APP_BASE_API,
     timeout: 500 * 1000,
     withCredentials: true
@@ -13,7 +13,7 @@ const service = axios.create({
 service.interceptors.request.use(
     (config: AxiosRequestConfig) => {
         if (UserModule.hasAccessToken()) {
-            config.headers.Authorization = `Bearer ${UserModule.access_token}`
+            config.headers.Authorization = `${UserModule.access_token}`
         }
         return config
     },
@@ -28,11 +28,12 @@ service.interceptors.response.use(
         if (res.size && res.type) {
             return Promise.resolve(res)
         }
-        if (res.code === '95' || res.code === '96' || res.code === '201') {
+        res.code = parseInt(res.code)
+        if (res.code === 95 || res.code === 96 || res.code === 201) {
             message.error(res.msg, 5 )
             router.replace('/login')
             return Promise.reject(res)
-        } else if (res.code !== '200') {
+        } else if (res.code !== 200) {
             if (res.code !== 101) {
                 message.error(res.msg || 'Error', 5)
                 return Promise.resolve(res)

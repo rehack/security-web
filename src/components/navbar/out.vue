@@ -1,5 +1,5 @@
 <template>
-    <poweroff-outlined/>
+    <poweroff-outlined @click="logout" />
 </template>
 
 <script lang="ts">

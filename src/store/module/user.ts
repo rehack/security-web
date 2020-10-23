@@ -24,7 +24,7 @@ class User extends VuexModule implements IUserState {
     public username = ''
     public nickname = ''
     public roles: string[] = []
-    public access_token: any = getAccessToken() || 'habd-2eyue-456yus'
+    public access_token: any = getAccessToken() || ''
     public refresh_token = ''
     public permissions: string[] = []
     public phone = ''
@@ -79,7 +79,6 @@ class User extends VuexModule implements IUserState {
             ...userInfo
         }
         let res: any = await doLogin(params);
-        res = RSA_Decrypt(res)
         if (res.code === 200) {
             const data = res.data
             const access_token = data.access_token
@@ -117,8 +116,8 @@ class User extends VuexModule implements IUserState {
         if (this.access_token === '') {
             throw Error('GetUserInfo: access_token is undefined!');
         }
-        const res: any = {code: '200', data: {userId: '123456', username: 'Admin', nickname: 'You Happy Just Ok', phone: '13208171125', roles: ['admin'], permissions: []}}
-        if (res.code === '200') {
+        const res: any = await getUserInfo();
+        if (res.code === 200) {
             const data = res.data
             this.SET_USER_ID(data.userId)
             this.SET_USERNAME(data.username)

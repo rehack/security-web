@@ -25,12 +25,12 @@ export const filterAsyncRoutes = (routes: RouteRecordRaw[], permissions: string[
     const res: RouteRecordRaw[] = []
     routes.forEach(route => {
         const r = { ...route }
-        // if (hasPermission(permissions, r)) {
+        if (hasPermission(permissions, r)) {
             if (r.children) {
                 r.children = filterAsyncRoutes(r.children, permissions)
             }
             res.push(r)
-        //}
+        }
     })
     return res
 }
@@ -54,7 +54,7 @@ class Permission extends VuexModule implements IPermissionState {
     @Action
     public GenerateRoutes(roleAndPermission: any) {
         let accessedRoutes
-        if (roleAndPermission.roles.includes('admin')) {
+        if (roleAndPermission.roles.includes('super')) {
             accessedRoutes = asyncRoutes
         } else {
             accessedRoutes = filterAsyncRoutes(asyncRoutes, roleAndPermission.permissions)

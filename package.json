@@ -1,12 +1,12 @@
 {
-  "name": "file-web",
+  "name": "candy-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve --mode local",
     "qa": "vue-cli-service serve --mode development",
     "prod": "vue-cli-service serve --mode production",
-    "build:prod": "vue-cli-service build --mode production",
+    "build:prod": "vue-cli-service build --mode development",
     "build:qa": "vue-cli-service build --mode development",
     "build:stage": "vue-cli-service build --mode staging",
     "build": "vue-cli-service build",
@@ -42,6 +42,7 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0-beta.1",
+    "compression-webpack-plugin": "^6.0.3",
     "node-sass": "^4.14.1",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",

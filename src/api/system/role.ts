@@ -2,7 +2,7 @@ import requests from '@/utils/request';
 
 export const querySelectionRoles = () =>
     requests({
-        url: '/role/query_roles_all',
+        url: '/system/role/query_roles_all',
         method: 'get',
     });
 

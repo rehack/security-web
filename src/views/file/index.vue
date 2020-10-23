@@ -148,7 +148,7 @@ export default class FileDB extends Vue{
             pageSize: this.pagination.pageSize
         }
         const res: any = await searchFromDb(queryParam)
-        if (res.code === '200') {
+        if (res.code === 200) {
             this.fileData = res.data.records
             this.pagination.total = parseInt(res.data.total)
         }
@@ -187,7 +187,7 @@ export default class FileDB extends Vue{
     private async remove(fileId: string) {
         this.removeButtonDisbled = true
         const res: any = await removeOne(fileId)
-        if (res.code === '200') {
+        if (res.code === 200) {
             message.success('已删除')
             this.initFileData();
         }
