@@ -1,6 +1,6 @@
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
-import { querySelectionRoles } from '@/api/role';
+import { querySelectionRoles } from '@/api/system/role';
 import { message } from 'ant-design-vue';
 
 export interface ISystemRoles {

@@ -2,7 +2,7 @@ import requests from '@/utils/request';
 
 export const querySelectionRoles = () =>
     requests({
-        url: '/system/role/query_roles_all',
+        url: '/role/query_roles_all',
         method: 'get',
     });
 
@@ -38,4 +38,10 @@ export const updateRolePermission = (params: any) =>
         url: '/role_permission/add_r_p',
         method: 'post',
         params
+    })
+
+export const deleteRole = (roleId: any) =>
+    requests({
+        url: '/role/delete_role/' + roleId,
+        method: 'delete'
     })

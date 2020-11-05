@@ -14,7 +14,7 @@ export interface ISettings {
 class Settings extends VuexModule implements ISettings {
 
     public menuCollapsed = false
-    public title = "文件系统管理中心"
+    public title = "你开心就好"
     public tagView = true
     public navbar = true
     public light = true

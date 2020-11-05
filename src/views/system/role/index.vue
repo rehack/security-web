@@ -22,10 +22,14 @@
     <a-table :columns="columns" :data-source="roles" rowKey="roleId" @change="handleChange" :pagination="pagination" :loading="searchLoading" bordered>
         <template v-slot:state="{text, record, index}">{{text === '1' ? '启用' : '禁用'}}</template>
         <template v-slot:operation="{userId, record, index}">
-            <a-button type="primary" @click="edit(record)">编辑</a-button>
-            <a-button v-if="record.state !== '1'" @click="changeState(record.roleId)">启用</a-button>
-            <a-button v-else @click="changeState(record.roleId)" type="danger">禁用</a-button>
-            <a-button type="dashed" @click="toPermissionConfig(record.roleId)">权限配置</a-button>
+            <div class="operations">
+                <a-button type="primary" @click="edit(record)">编辑</a-button>
+                <a-button v-if="record.state !== '1'" @click="changeState(record.roleId)">启用</a-button>
+                <a-button v-else @click="changeState(record.roleId)" type="danger">禁用</a-button>
+                <a-button type="dashed" @click="toPermissionConfig(record.roleId)">权限配置</a-button>
+                <a-button type="danger" v-if="myPermissions.includes('button:delete:role')" @click="deleteRole(record)">删除</a-button>
+            </div>
+
         </template>
     </a-table>
 
@@ -66,10 +70,12 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { queryRoles, updateRole, enableRole, addRole, updateRolePermission } from "@/api/system/role";
-import {message} from "ant-design-vue";
+import { queryRoles, updateRole, enableRole, addRole, updateRolePermission, deleteRole } from "@/api/system/role";
+import {message, Modal} from "ant-design-vue";
 import { UserModule } from "@/store/module/user";
-import { queryPermissions, queryByRoleId } from "@/api/permission";
+import { queryPermissions, queryByRoleId } from "@/api/system/permission";
+import {createVNode} from "vue";
+import {ExclamationCircleOutlined} from "@ant-design/icons-vue/lib";
 
 @Options({
     name: "role"
@@ -129,6 +135,10 @@ export default class User extends Vue{
         title: 'permissionName',
     }
     public nowRoleId = 0;
+
+    get myPermissions() {
+        return UserModule.permissions;
+    }
 
     created() {
         this.initRolesData()
@@ -224,7 +234,7 @@ export default class User extends Vue{
     private async saveRolePermission() {
         const params = {
             roleId: this.nowRoleId,
-            permissionIds: (this.rolePermissions as any).checked.join(",")
+            permissionIds: (this.rolePermissions as any).checked ? (this.rolePermissions as any).checked.join(",") : (this.rolePermissions as any).join(",")
         }
         const res: any = await updateRolePermission(params)
         if (res.code === 200) {
@@ -232,9 +242,36 @@ export default class User extends Vue{
             message.success('编辑成功')
         }
     }
+    private async deleteRole(record: any) {
+        const self = this;
+        Modal.confirm({
+            title: `删除角色`,
+            content: `确认删除角色:${record.role}?`,
+            icon: createVNode(ExclamationCircleOutlined),
+            cancelText: '取消',
+            okText: '确认',
+            onOk() {
+                deleteRole(record.roleId).then((res: any) => {
+                    if (res.code === 200) {
+                        message.success('删除成功')
+                        self.initRolesData()
+                    }
+                })
+            },
+        })
+    }
 
 }
 </script>
 
 <style lang="scss" scoped>
+    .operations {
+        display: flex;
+        justify-content: flex-start;
+
+        * {
+            display: block;
+            margin-right: 5px;
+        }
+    }
 </style>

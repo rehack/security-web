@@ -1,6 +1,6 @@
 import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators'
 import store from '@/store'
-import { doLogin, getUserInfo, doLogout, refresh } from '@/api/user'
+import { doLogin, getUserInfo, doLogout, refresh } from '@/api/system/user'
 import { removeToken, setAccessToken, setRefreshToken, hasAccessToken, hasRefreshToken, getAccessToken } from '@/utils/cookies'
 import { resetRouter } from "@/router"
 import {RSA_Decrypt} from '@/utils/crypt'

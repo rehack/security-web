@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component"
-import { searchFromDb, removeOne, downloadById, downloadByIds } from '@/api/file'
+import { searchFromDb, removeOne, downloadById, downloadByIds } from '@/api/file/file'
 import { SettingsModule} from "@/store/module/settings"
 import { copy } from "iclipboard/esm";
 import { message } from "ant-design-vue";

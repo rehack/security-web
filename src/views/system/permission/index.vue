@@ -72,7 +72,7 @@
 </template>
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { queryPermissions, queryPermission, updatePermission, addPermission, deletePermission } from "@/api/permission";
+import { queryPermissions, queryPermission, updatePermission, addPermission, deletePermission } from "@/api/system/permission";
 import {message} from "ant-design-vue";
 
 @Options({

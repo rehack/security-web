@@ -7,7 +7,7 @@ import { message } from 'ant-design-vue'
 import { SettingsModule} from "@/store/module/settings"
 
 NProgress.configure({ showSpinner: false })
-const whiteList = ['/login', '/auth-redirect', '/test']
+const whiteList = ['/login', '/auth-redirect', '/test', '/tour']
 
 const getPageTitle = (key: string) => {
   /*if (key) {
@@ -48,9 +48,10 @@ router.beforeEach(async(to: RouteLocationNormalized,  from: RouteLocationNormali
         if (whiteList.indexOf(to.path) !== -1) {
             next()
         } else {
-            UserModule.LogOut()
+            /*UserModule.LogOut()
             next(`/login?redirect=${to.path}`)
-            NProgress.done()
+            NProgress.done()*/
+            next('/tour')
         }
     }
 });

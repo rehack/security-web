@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component"
-import {downloadByPath, removeOne, scanFilesFromServer} from "@/api/file"
+import {downloadByPath, removeOne, scanFilesFromServer} from "@/api/file/file"
 import {message} from "ant-design-vue";
 import {SettingsModule} from "@/store/module/settings";
 import { download } from "@/utils/file";

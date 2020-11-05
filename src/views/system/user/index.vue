@@ -32,18 +32,21 @@
         <template v-slot:avatar="{text, record, index}"><a-avatar :src="getPhoto(text)" /></template>
         <template v-slot:state="{text, record, index}"><span>{{text === '1' ? '启用' : '禁用'}}</span></template>
         <template v-slot:operation="{userId, record, index}">
-            <a-button type="primary" @click="edit(record)">编辑</a-button>
-            <a-button v-if="record.state !== '1'" @click="changeState(record.userId)">启用</a-button>
-            <a-button v-else @click="changeState(record.userId)" type="danger">禁用</a-button>
-            <a-popover title="修改密码" trigger="click">
-                <template v-slot:content>
-                    <a-row>
-                        <a-col span="20"><a-input v-model:value="updateParams.password" /></a-col>
-                        <a-col span="4"><a-button type="primary" @click="update(record.userId)">ok</a-button></a-col>
-                    </a-row>
-                </template>
-                <a-button v-if="myPermissions.includes('button:update:password')">修改密码</a-button>
-            </a-popover>
+            <div class="operations">
+                <a-button type="primary" @click="edit(record)">编辑</a-button>
+                <a-button v-if="record.state !== '1'" @click="changeState(record.userId)">启用</a-button>
+                <a-button v-else @click="changeState(record.userId)" type="danger">禁用</a-button>
+                <a-popover title="修改密码" trigger="click">
+                    <template v-slot:content>
+                        <a-row>
+                            <a-col span="20"><a-input v-model:value="updateParams.password" /></a-col>
+                            <a-col span="4"><a-button type="primary" @click="update(record.userId)">ok</a-button></a-col>
+                        </a-row>
+                    </template>
+                    <a-button v-if="myPermissions.includes('button:update:password')">修改密码</a-button>
+                </a-popover>
+                <a-button type="danger" v-if="myPermissions.includes('button:delete:user')" @click="deleteUser(record)">删除</a-button>
+            </div>
         </template>
     </a-table>
 
@@ -101,11 +104,12 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { queryUsers, updateUser, enableUser, addUser, updatePassword } from "@/api/system/user";
+import { queryUsers, updateUser, enableUser, addUser, updatePassword, deleteUser } from "@/api/system/user";
 import { SystemRolesModule } from "@/store/module/system-roles";
-import { UserOutlined, InsuranceOutlined, ContactsOutlined } from "@ant-design/icons-vue/lib";
-import { message } from 'ant-design-vue';
+import {UserOutlined, InsuranceOutlined, ContactsOutlined, ExclamationCircleOutlined} from "@ant-design/icons-vue/lib";
+import { message, Modal } from 'ant-design-vue';
 import { UserModule } from '@/store/module/user';
+import { createVNode } from 'vue'
 
 @Options({
     name: "user",
@@ -279,6 +283,26 @@ export default class User extends Vue{
             this.initUserData()
         }
     }
+
+    private async deleteUser(record: any) {
+        const self = this;
+        Modal.confirm({
+            title: '删除用户',
+            content: `确认删除用户:${record.nickname}?`,
+            icon: createVNode(ExclamationCircleOutlined),
+            cancelText: '取消',
+            okText: '确认',
+            onOk() {
+                deleteUser(record.userId).then((res: any) => {
+                    if (res.code === 200) {
+                        message.success('删除成功')
+                        self.initUserData()
+                    }
+                })
+            },
+        })
+    }
+
     private getPhoto(fileFullPath: string) {
         return process.env.VUE_APP_FILE_SERVER_URL + fileFullPath;
     }
@@ -286,6 +310,14 @@ export default class User extends Vue{
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    .operations {
+        display: flex;
+        justify-content: flex-start;
 
+        * {
+            display: block;
+            margin-right: 5px;
+        }
+    }
 </style>
