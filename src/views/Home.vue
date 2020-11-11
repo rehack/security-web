@@ -2,26 +2,24 @@
     <a-row id="topItems">
         <a-col :span="topItemSpan">
             <a-card>
-                <a-upload v-model:fileList="uploadFileList" name="file" :multiple="true"
-                          @change="uploadListChange" :action="uploadUrl" :before-upload="beforeUpload">
-                    <a-button><upload-outlined/>单文件上传</a-button>
-                </a-upload>
+                用户具有的角色: {{roles}}
             </a-card>
         </a-col>
         <a-col :span="topItemSpan">
             <a-card>
-                <a-upload v-model:fileList="uploadManyList" name="file" :multiple="false" :directory="true"
-                          @change="uploadListChange" :action="uploadUrl">
-                    <a-button><upload-outlined/>多文件上传</a-button>
-                </a-upload>
+                <a-button type="primary" @click="roleTestOr">admin或者super权限按钮</a-button>
+                <a-button type="danger" @click="roleTestAnd">admin并且super权限按钮</a-button>
             </a-card>
         </a-col>
         <a-col :span="topItemSpan">
             <a-card>
+                用户具有的权限: {{permissions}}
             </a-card>
         </a-col>
         <a-col :span="topItemSpan">
             <a-card>
+                <a-button type="primary" @click="permissionTestOr">button:update:password或button:update:super</a-button>
+                <a-button type="danger" @click="permissionTestForbidden">button:update:super</a-button>
             </a-card>
         </a-col>
     </a-row>
@@ -30,9 +28,9 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component"
 import { UploadOutlined } from '@ant-design/icons-vue';
+import { roleTestOr, roleTestAnd, permissionTestForbidden, permissionTestOr } from "@/api/test";
+import {UserModule} from "@/store/module/user";
 import {message} from "ant-design-vue";
-import {SettingsModule} from "@/store/module/settings";
-import { removeOne } from "@/api/file/file";
 
 @Options({
     name: 'home',
@@ -43,44 +41,28 @@ import { removeOne } from "@/api/file/file";
 export default class HomePage extends Vue {
 
     private topItemSpan = 6;
-    private uploadFileList = [];
-    private uploadManyList = [];
 
-    private uploadListChange(info: any) {
-        if (info.file.status === 'done') {
-            const res: any = info.file.response
-            if (res.code === '200') {
-                message.success('上传成功')
-            } else {
-                message.error(res.msg)
-            }
-        }
-        else if (info.file.status === 'removed') {
-            const res: any = info.file.response.data
-            const fileId: string = res.fileId
-            removeOne(fileId)
-        }
-        else if (info.file.status === 'error') {
-            message.error('上传失败')
-        }
-    }
-    private uploadManyChange(info: any) {
-
+    get roles() {
+        return UserModule.roles;
     }
 
-    get uploadUrl() {
-        return process.env.VUE_APP_BASE_API + "/uploader/u";
-    }
-    get uploadManyUrl() {
-        return process.env.VUE_APP_BASE_API + "/uploader/um";
+    get permissions() {
+        return UserModule.permissions;
     }
 
-    private beforeUpload(file: any) {
-        if (this.uploadFileList.length > 10) {
-            message.error('上传个数10个以内')
-            return Promise.reject(file)
-        }
-        return Promise.resolve(file)
+    private async roleTestOr() {
+        const res: any = await roleTestOr();
+        message.success(res.data);
+    }
+    private async roleTestAnd() {
+        const res: any = await roleTestAnd();
+    }
+    private async permissionTestForbidden() {
+        const res: any = await permissionTestForbidden();
+    }
+    private async permissionTestOr() {
+        const res: any = await permissionTestOr();
+        message.success(res.data);
     }
 
 }

@@ -28,7 +28,7 @@ import { UserModule } from "@/store/module/user"
 export default class User extends Vue{
 
     get nickname() {
-        return UserModule.nickname
+        return UserModule.username
     }
 }
 </script>

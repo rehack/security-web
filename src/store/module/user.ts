@@ -28,8 +28,8 @@ class User extends VuexModule implements IUserState {
     public refresh_token = ''
     public permissions: string[] = []
     public phone = ''
-    public appId= 'client'
-    public appSecret = 'secret'
+    public appId= 'appId'
+    public appSecret = 'appSecret'
 
     @Mutation
     private SET_ACCESS_TOKEN(access_token: string) {
@@ -72,6 +72,11 @@ class User extends VuexModule implements IUserState {
     }
 
     @Action
+    public setToken(token: string) {
+        this.SET_ACCESS_TOKEN(token);
+    }
+
+    @Action
     public async Login(userInfo: {username: string, password: string}): Promise<boolean> {
         const params = {
             appId: this.appId,
@@ -81,12 +86,9 @@ class User extends VuexModule implements IUserState {
         let res: any = await doLogin(params);
         if (res.code === 200) {
             const data = res.data
-            const access_token = data.access_token
-            const refresh_token = data.refresh_token
-            setAccessToken(access_token, parseInt(data.expires_in))
-            setRefreshToken(refresh_token, 43200)
+            const access_token = data.accessToken
+            setAccessToken(access_token, parseInt(data.expireIn))
             this.SET_ACCESS_TOKEN(access_token)
-            this.SET_REFRESH_TOKEN(refresh_token)
             return true
         } else {
             this.ResetToken()
@@ -131,7 +133,8 @@ class User extends VuexModule implements IUserState {
     @Action
     public async LogOut(): Promise<boolean> {
         if (this.access_token != '') {
-            const res: any = await doLogout()
+            const params = {"appId": "appId"}
+            const res: any = await doLogout(params)
             if (res.code === 200) {
                 resetRouter()
                 this.ResetToken()

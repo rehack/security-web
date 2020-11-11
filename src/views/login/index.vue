@@ -1,7 +1,20 @@
 <template>
     <div class="page">
         <div class="form">
+            <h1>密码模式</h1>
             <a-form :model="loginForm" :rules="loginFormCheckRules" layout="horizontal" ref="loginRef">
+                <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" has-feedback>
+                    <a-input v-model:value="loginForm.appId" size="large" autocomplete="off" readonly>
+                        <template v-slot:prefix><user-outlined type="user"></user-outlined></template>
+                        <template v-slot:suffix><a-tooltip title="用户名"><info-circle-outlined style="color: rgba(0,0,0,.45)" /></a-tooltip></template>
+                    </a-input>
+                </a-form-item>
+                <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" has-feedback>
+                    <a-input v-model:value="loginForm.appSecret" size="large" autocomplete="off" readonly>
+                        <template v-slot:prefix><user-outlined type="user"></user-outlined></template>
+                        <template v-slot:suffix><a-tooltip title="用户名"><info-circle-outlined style="color: rgba(0,0,0,.45)" /></a-tooltip></template>
+                    </a-input>
+                </a-form-item>
                 <a-form-item name="username" :label-col="labelCol" :wrapper-col="wrapperCol" has-feedback>
                     <a-input placeholder="用户名" v-model:value="loginForm.username" size="large" autocomplete="off">
                         <template v-slot:prefix><user-outlined type="user"></user-outlined></template>
@@ -19,6 +32,27 @@
                 </a-form-item>
             </a-form>
         </div>
+
+            <div class="form2">
+                <h1>授权码模式(第三方登录)</h1>
+                <a-form :model="loginFormCode" :rules="loginFormCheckRules" layout="horizontal" ref="loginRef">
+                    <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" has-feedback>
+                        <a-input v-model:value="loginFormCode.appId" size="large" autocomplete="off" readonly>
+                            <template v-slot:prefix><user-outlined type="user"></user-outlined></template>
+                            <template v-slot:suffix><a-tooltip title="用户名"><info-circle-outlined style="color: rgba(0,0,0,.45)" /></a-tooltip></template>
+                        </a-input>
+                    </a-form-item>
+                    <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" has-feedback>
+                        <a-input v-model:value="loginFormCode.appSecret" size="large" autocomplete="off" readonly>
+                            <template v-slot:prefix><user-outlined type="user"></user-outlined></template>
+                            <template v-slot:suffix><a-tooltip title="用户名"><info-circle-outlined style="color: rgba(0,0,0,.45)" /></a-tooltip></template>
+                        </a-input>
+                    </a-form-item>
+                    <a-form-item :wrapper-col="wrapperCol">
+                        <a-button @click="toThree" type="primary" class="form-button" :loading="isLoginReqLoading">去第三方登录</a-button>
+                    </a-form-item>
+                </a-form>
+        </div>
     </div>
 </template>
 
@@ -27,6 +61,8 @@ import { UserOutlined, SafetyOutlined,InfoCircleOutlined } from "@ant-design/ico
 import { UserModule } from '@/store/module/user';
 import { message, notification, Form } from "ant-design-vue";
 import { Options, Vue } from "vue-class-component"
+import {setAccessToken} from "@/utils/cookies";
+import { getToken } from '@/api/test';
 
 @Options({
     name: "login",
@@ -51,9 +87,51 @@ export default class Login extends Vue {
     }
     private isLoginReqLoading = false
 
+    created() {
+        const code: string = this.getUrlParams(window.location.search).get("code");
+        if (code) {
+            const params = {
+                code
+            }
+            getToken(params).then((res: any) => {
+                if (res.code == 200) {
+                    const accessToken = res.data.accessToken;
+                    if (accessToken && accessToken !== "") {
+                        setAccessToken(accessToken, res.data.expireIn)
+                        UserModule.setToken(accessToken)
+                        this.$router.push("/dashboard")
+                    } else {
+                        message.error("授权码已失效,请重新登录")
+                    }
+                }
+            })
+        }
+    }
+
+    private getUrlParams(search: string) {
+        const params = search.split("&")
+        const map = new Map();
+        for (var i = 0; i < params.length; i++) {
+            var param = params[i].replace("?", "").split("=")
+            map.set(param[0], param[1])
+        }
+        return map;
+    }
+
     public loginForm = {
+        username: 'zhangziqiang',
+        password: 'wowangle',
+        appId: 'appId',
+        appSecret: 'appSecret',
+        grantType: 'password'
+    }
+
+    public loginFormCode = {
         username: '',
-        password: ''
+        password: '',
+        appId: 'appId',
+        appSecret: 'appSecret',
+        grantType: 'code'
     }
 
     private doLogin() {
@@ -80,6 +158,11 @@ export default class Login extends Vue {
         return Promise.resolve()
     }
 
+    private toThree() {
+        const returnUrl = window.location.href.split("?")[0]
+        window.location.href = process.env.VUE_APP_CODE_SERVER_PAGE + "?redirectUrl=" + returnUrl + "&appId=" + this.loginFormCode.appId + "&appSecret=" + this.loginFormCode.appSecret
+    }
+
 }
 </script>
 
@@ -91,7 +174,21 @@ export default class Login extends Vue {
         position: absolute;
         width: 300px;
         height: 300px;
-        left: 40%;
+        left: 20%;
+        top: 25%;
+        .ant-form {
+            margin-top: 75px;
+        }
+        background-color: #e8dfdf;
+        border: 1px solid #d5d0d0;
+        border-radius: 10px;
+    }
+
+    .form2 {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        left: 50%;
         top: 25%;
         .ant-form {
             margin-top: 75px;

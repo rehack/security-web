@@ -3,21 +3,22 @@ import {AES_CBC_Decrypt, AES_CBC_Encrypt, RSA_Decrypt, RSA_Encrypt} from '@/util
 
 export const doLogin = (params: any) =>
     requests({
-        url: '/auth/login',
+        url: '/oauth/login',
         method: 'post',
         params
     });
 
 export const getUserInfo = () =>
     requests({
-        url: '/user/query_my_permissions',
+        url: '/oauth/get_user_info',
         method: 'get',
     });
 
-export const doLogout = () =>
+export const doLogout = (params: any) =>
     requests({
-        url: '/auth/logout',
-        method: 'post',
+        url: '/oauth/logout',
+        method: 'get',
+        params
     });
 
 export const refresh = (params: any) =>

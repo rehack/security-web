@@ -7,7 +7,7 @@ import { message } from 'ant-design-vue'
 import { SettingsModule} from "@/store/module/settings"
 
 NProgress.configure({ showSpinner: false })
-const whiteList = ['/login', '/auth-redirect', '/test', '/tour']
+const whiteList = ['/login', '/auth-redirect', '/test', ]
 
 const getPageTitle = (key: string) => {
   /*if (key) {
@@ -35,6 +35,7 @@ router.beforeEach(async(to: RouteLocationNormalized,  from: RouteLocationNormali
                     })
                     next({ ...to, replace: true})
                 } catch (error) {
+                    console.log(error);
                     UserModule.ResetToken()
                     message.error('Router Error')
                     next(`/login?redirect=${to.path}`)
@@ -45,13 +46,13 @@ router.beforeEach(async(to: RouteLocationNormalized,  from: RouteLocationNormali
             }
         }
     } else {
-        if (whiteList.indexOf(to.path) !== -1) {
+        if (whiteList.indexOf(to.path) !== -1 || to.path.includes(process.env.VUE_APP_CODE_SERVER_PAGE) || to.path.includes("/login")) {
             next()
         } else {
             /*UserModule.LogOut()
             next(`/login?redirect=${to.path}`)
             NProgress.done()*/
-            next('/tour')
+            next('/login')
         }
     }
 });
