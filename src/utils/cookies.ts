@@ -8,8 +8,8 @@ const sizeKey = 'size';
 export const getSize = () => Cookies.get(sizeKey);
 export const setSize = (size: string) => Cookies.set(sizeKey, size);
 
-const accessTokenKey = 'access_token';
-const refreshTokenKey = 'refresh_token';
+const accessTokenKey = 'security_access_token';
+const refreshTokenKey = 'security_refresh_token';
 export const getAccessToken = () => Cookies.get(accessTokenKey);
 export const setAccessToken = (access_token: string, expires: number) => Cookies.set(accessTokenKey, access_token, {expires: getTime(expires)});
 export const getRefreshToken = () => Cookies.get(refreshTokenKey);
